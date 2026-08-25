@@ -321,6 +321,41 @@ function HomePage() {
 
       <SuburbLibraryRails />
 
+      <section className="guides-hub reveal-up" style={{ padding: '4rem 0', background: 'var(--surface-alt)' }}>
+        <div className="section-header">
+          <h2>Discover Suburb Guides</h2>
+          <p>Explore our data-driven rankings for the best suburbs across Australia.</p>
+        </div>
+        <div className="calculator-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
+          <a href="/guides/vic/families" className="calculator-card featured reveal-stagger">
+            <div className="calculator-icon">👨‍👩‍👧‍👦</div>
+            <div className="calculator-info">
+              <h3>Best for Families (VIC)</h3>
+              <p>Top suburbs ranked by school quality, safety, and parks.</p>
+            </div>
+          </a>
+          <a href="/guides/nsw/commuters" className="calculator-card featured reveal-stagger">
+            <div className="calculator-icon">🚆</div>
+            <div className="calculator-info">
+              <h3>Best for Commuters (NSW)</h3>
+              <p>Top suburbs ranked by transit access and CBD proximity.</p>
+            </div>
+          </a>
+          <a href="/guides/qld/safest" className="calculator-card featured reveal-stagger">
+            <div className="calculator-icon">🛡️</div>
+            <div className="calculator-info">
+              <h3>Safest Suburbs (QLD)</h3>
+              <p>Top suburbs ranked by low crime rates and community safety.</p>
+            </div>
+          </a>
+        </div>
+        <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+          <a href="/state/vic" className="btn btn-secondary" style={{ margin: '0 0.5rem' }}>Explore VIC</a>
+          <a href="/state/nsw" className="btn btn-secondary" style={{ margin: '0 0.5rem' }}>Explore NSW</a>
+          <a href="/state/qld" className="btn btn-secondary" style={{ margin: '0 0.5rem' }}>Explore QLD</a>
+        </div>
+      </section>
+
       <section className="calculators-hub reveal-up">
         <div className="section-header">
           <h2>Decision Tools</h2>
