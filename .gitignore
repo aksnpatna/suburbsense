@@ -1,0 +1,46 @@
+# Environment
+.env
+venv/
+backend_env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# IDE
+.vscode/
+.idea/
+.kilo/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+*.db
+*.sqlite3
+
+# Logs
+*.log
+npm-debug.log*
+
+# Cache
+.pytest_cache/
+.mypy_cache/
+
+# Large data files
+backend/dq_report.csv
+backend/sql/*.sql.bak
+graphify-out/
+
+# Large data files
+backend/gtfs/*.zip
+backend/gtfs/vic_extracted/

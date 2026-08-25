@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+python-multipart
+pydantic
+pydantic-settings
+python-dotenv
+requests
+openai
+sqlalchemy
+psycopg[binary]
+psycopg2-binary
+slowapi\nsecure
