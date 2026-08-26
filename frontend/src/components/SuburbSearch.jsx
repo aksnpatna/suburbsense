@@ -17,6 +17,24 @@ export function SuburbSearch({ onSelect, placeholder = "Search suburbs...", clas
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const [cycleIndex, setCycleIndex] = useState(0);
+
+  const CYCLE_PLACEHOLDERS = [
+    'Try "Chatswood NSW" or "Fitzroy VIC"...',
+    'Search by suburb, region or postcode...',
+    'Where are you thinking of moving?',
+    'Try "Manly NSW" or "South Yarra VIC"...',
+  ];
+
+  useEffect(() => {
+    if (query) return; // stop cycling once user types
+    const timer = setInterval(() => {
+      setCycleIndex(i => (i + 1) % CYCLE_PLACEHOLDERS.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [query]);
+
+  const activePlaceholder = query ? placeholder : CYCLE_PLACEHOLDERS[cycleIndex];
 
   const fetchResults = useCallback(
     debounce(async (searchQuery, setLoader, setRes) => {
@@ -80,7 +98,7 @@ export function SuburbSearch({ onSelect, placeholder = "Search suburbs...", clas
           type="text"
           value={query}
           onChange={handleInputChange}
-          placeholder={placeholder}
+          placeholder={activePlaceholder}
           className="suburb-search-input"
           aria-label="Search suburbs"
         />

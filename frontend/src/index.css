@@ -460,14 +460,11 @@ h1, h2, h3, h4, .hero-title, .section-title, .calculator-card h3, .feature-card 
 }
 
 .nav-link.nav-link-energy {
-  background: linear-gradient(135deg, #eff6ff, #dbeafe);
-  color: #1d4ed8;
-  font-weight: 600;
+  /* Same style as other nav links — no special highlighting */
 }
 
 .nav-link.nav-link-energy:hover {
-  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-  color: #1e40af;
+  /* Inherits standard nav hover */
 }
 
 .subscribe-form {
