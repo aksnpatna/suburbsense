@@ -4114,7 +4114,7 @@ h1, h2, h3, h4, .hero-title, .section-title, .calculator-card h3, .feature-card 
 /* ========== Hero polish ========== */
 .hero {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   background:
     radial-gradient(600px 300px at 15% 10%, rgba(37, 99, 235, 0.12), transparent 60%),
     radial-gradient(600px 300px at 85% 25%, rgba(16, 185, 129, 0.10), transparent 60%),
@@ -4465,7 +4465,7 @@ h1, h2, h3, h4, .hero-title, .section-title, .calculator-card h3, .feature-card 
   background-size: 400% 400%;
   animation: gradientAnimation 15s ease infinite;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 [data-theme="dark"] .hero {
