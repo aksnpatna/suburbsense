@@ -227,28 +227,29 @@ export function PartnersPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="cta-section" style={{ padding: '6rem 0', background: 'linear-gradient(135deg, var(--brand-blue-dark) 0%, #1e3a8a 100%)', color: 'white', textAlign: 'center' }}>
-        <div className="container">
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Ready to reach first home buyers?</h2>
-          <p style={{ fontSize: '1.2rem', opacity: 0.9, maxWidth: '600px', margin: '0 auto 2.5rem auto' }}>
+      <section className="cta-section" style={{ padding: '6rem 1rem', background: '#0f172a', color: '#ffffff', textAlign: 'center' }}>
+        <div className="container" style={{ background: 'rgba(255, 255, 255, 0.05)', padding: '3rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)' }}>
+          <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem', color: '#ffffff' }}>Ready to reach first home buyers?</h2>
+          <p style={{ fontSize: '1.2rem', opacity: 0.9, maxWidth: '600px', margin: '0 auto 2.5rem auto', color: '#e2e8f0', lineHeight: 1.6 }}>
             Send us a message with your company name, the audience you're trying to reach, and which placement type interests you. We'll respond within 1 business day.
           </p>
           <a href="mailto:partners@suburbsense.com.au" style={{
             display: 'inline-flex',
             alignItems: 'center',
             gap: '0.75rem',
-            background: 'white',
-            color: 'var(--brand-blue-dark)',
+            background: '#3b82f6',
+            color: '#ffffff',
             padding: '1.2rem 2.5rem',
             borderRadius: '30px',
             fontSize: '1.2rem',
             fontWeight: 700,
             textDecoration: 'none',
-            boxShadow: '0 10px 20px rgba(0,0,0,0.1)'
+            boxShadow: '0 4px 14px rgba(59, 130, 246, 0.4)',
+            transition: 'transform 0.2s'
           }}>
             📧 partners@suburbsense.com.au
           </a>
-          <p style={{ marginTop: '1.5rem', fontSize: '0.9rem', opacity: 0.7 }}>No forms. No gatekeeping. Just email us directly.</p>
+          <p style={{ marginTop: '1.5rem', fontSize: '0.9rem', color: '#94a3b8' }}>No forms. No gatekeeping. Just email us directly.</p>
         </div>
       </section>
     </div>
