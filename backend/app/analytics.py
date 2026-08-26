@@ -17,9 +17,9 @@ class FeedbackEvent(BaseModel):
 
 @router.post("/analytics/track")
 def track_page_view(event: TrackEvent, request: Request, db: Session = Depends(get_utility_db)):
-    ip = request.headers.get("x-forwarded-for") or request.client.host
+    ip = request.headers.get("x-forwarded-for", "").split(",")[0].strip() or request.client.host
     user_agent = request.headers.get("user-agent", "")
-    
+
     db.execute(text("""
         INSERT INTO page_views (path, ip_address, user_agent, referer, country)
         VALUES (:path, :ip_address, :user_agent, :referer, 'AU')
@@ -30,7 +30,7 @@ def track_page_view(event: TrackEvent, request: Request, db: Session = Depends(g
         "referer": event.referrer
     })
     db.commit()
-    
+
     return {"status": "tracked"}
 
 @router.post("/feedback")
@@ -105,3 +105,20 @@ def get_global_news(db: Session = Depends(get_realestate_db)):
             "last_updated": r.last_updated
         } for r in results
     ]
+
+
+@router.post("/news/refresh")
+def refresh_news():
+    """Trigger a news fetch via Tavily. Run this on a schedule (e.g. daily cron)."""
+    import subprocess
+    import sys
+    try:
+        result = subprocess.run(
+            [sys.executable, "-m", "app.news_fetcher"],
+            capture_output=True, text=True, timeout=120
+        )
+        if result.returncode == 0:
+            return {"status": "success", "output": result.stdout}
+        return {"status": "error", "detail": result.stderr}
+    except Exception as e:
+        return {"status": "error", "detail": str(e)}

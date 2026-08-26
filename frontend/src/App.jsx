@@ -10,6 +10,8 @@ import { ThemeToggle } from './components/ThemeToggle';
 import { recordRecentVisit } from './hooks/useSuburbLibrary';
 import { AINewsSection } from './components/AINewsSection';
 import { GlobalMarketPulse } from './components/GlobalMarketPulse';
+import { PartnerEcosystem } from './components/PartnerEcosystem';
+import { TrendingTicker } from './components/TrendingTicker';
 
 function useScrollReveal() {
   const observerRef = useRef(null);
@@ -96,10 +98,12 @@ import { AnalyticsDashboard } from './pages/AnalyticsDashboard';
 import { FeedbackWidget } from './components/FeedbackWidget';
 import { GuidePage } from './pages/GuidePage';
 import { useAnalytics } from './hooks/useAnalytics';
+import { CookieBanner, useAnalyticsConsent } from './components/CookieBanner';
 
 function App() {
   const location = useLocation();
-  useAnalytics();
+  const { consent, showBanner, accept, decline } = useAnalyticsConsent();
+  useAnalytics(consent);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [subscribeEmail, setSubscribeEmail] = useState('');
@@ -111,20 +115,6 @@ function App() {
   const isHome = location.pathname === '/';
   const isSuburb = location.pathname.startsWith('/suburb/');
   const isCalculator = location.pathname.startsWith('/calculators');
-
-  useEffect(() => {
-    // Track page views, excluding the analytics dashboard itself
-    if (location.pathname !== '/analytics') {
-      fetch('/api/analytics/track', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          path: location.pathname,
-          referrer: document.referrer || null
-        })
-      }).catch(err => console.error("Tracking failed:", err));
-    }
-  }, [location.pathname]);
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
@@ -226,6 +216,8 @@ function App() {
 
         <FeedbackWidget />
 
+        <CookieBanner onAccept={accept} onDecline={decline} visible={showBanner} />
+
         <footer className="footer" style={{ background: 'var(--surface)', borderTop: '1px solid var(--border-color)', color: 'var(--text-secondary)' }}>
           <div className="container">
             <div className="footer-grid">
@@ -289,14 +281,16 @@ function HomePage() {
   };
 
   return (
-    <div className="container">
-      <Helmet>
-        <title>SuburbSense — Australian Suburb Intelligence</title>
-        <meta name="description" content="Free suburb profiles with school catchments, transit scores, stamp duty, affordability, ROI calculators and ABS census data. No login required." />
-        <link rel="canonical" href="https://suburbsense.com.au" />
-      </Helmet>
+    <>
+      <TrendingTicker />
+      <div className="container">
+        <Helmet>
+          <title>SuburbSense — Australian Suburb Intelligence</title>
+          <meta name="description" content="Free suburb profiles with school catchments, transit scores, stamp duty, affordability, ROI calculators and ABS census data. No login required." />
+          <link rel="canonical" href="https://suburbsense.com.au" />
+        </Helmet>
 
-      <section className="hero">
+        <section className="hero">
         <div className="hero-content">
           <div className="hero-badge">🏆 Free Australian Suburb Intelligence</div>
           <h1 className="hero-title">
@@ -438,6 +432,8 @@ function HomePage() {
         </div>
       </section>
 
+      <PartnerEcosystem />
+
       <section className="features reveal-up">
         <div className="section-header">
           <h2>Suburb Profiles</h2>
@@ -523,6 +519,7 @@ function HomePage() {
         </div>
       </section>
     </div>
+    </>
   );
 }
 
@@ -830,11 +827,8 @@ function SuburbProfile() {
         </div>
       </section>
 
-      <div className="suburb-content">
-        
-        {data.news_sentiment && <AINewsSection newsSentiment={data.news_sentiment} />}
-
-        <section id="map" className="map-section" ref={mapRef}>
+        <div className="suburb-content">
+          <section id="map" className="map-section" ref={mapRef}>
           <h2 className="section-title">
             {selectedSchoolZone ? `Catchment: ${selectedSchoolZone.name}` : 'Location, Schools & Transit'}
           </h2>

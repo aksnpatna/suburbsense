@@ -28,6 +28,9 @@ class Settings(BaseSettings):
     aer_reference_daily_charge_cents: float | None = None
     aer_reference_usage_charge_cents: float | None = None
 
+    # Tavily API for news aggregation
+    tavily_api_key: str = ""
+
     # Attribution constants for the site (required by data sources)
     attributions: list = [
         {"name": "OpenStreetMap contributors", "url": "https://www.openstreetmap.org/copyright"},

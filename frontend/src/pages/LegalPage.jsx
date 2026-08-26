@@ -12,18 +12,20 @@ const legalContent = {
       <h3>1. Information Collection</h3>
       <p><strong>Data you choose to share:</strong> The only time we collect personal information (like your email address) is if you actively opt-in to a waitlist or newsletter. Account creation is not required to use our core features.</p>
       
-      <p><strong>System and usage data:</strong> Like all websites, our infrastructure providers automatically log certain technical details to keep the site secure and functional:</p>
+      <p><strong>Analytics data:</strong> With your consent, we collect the following when you visit our site to understand aggregated traffic patterns:</p>
       <ul>
-        <li><strong>IP Addresses:</strong> Used strictly for rate-limiting and security, not for individual tracking.</li>
-        <li><strong>Aggregated Analytics:</strong> We look at total page views to see which features are popular, but we never track individual user journeys.</li>
-        <li><strong>Device Data:</strong> Basic browser and device types to ensure the site displays correctly.</li>
+        <li><strong>IP Address:</strong> Stored to count unique visitors and prevent abuse. Not shared with third parties.</li>
+        <li><strong>Browser/Device Type:</strong> User-agent string to ensure site compatibility.</li>
+        <li><strong>Pages Visited:</strong> URL paths to measure feature popularity.</li>
+        <li><strong>Referrer:</strong> The site that brought us you (e.g., Google search), where available.</li>
       </ul>
+      <p>You may decline analytics tracking at any time — core site functionality is unaffected.</p>
 
       <h3>2. Tracking & Cookies</h3>
-      <p>We use minimal cookies. If you consent to our cookie banner, a preference cookie is saved (containing no personal data). We may also use standard analytics cookies strictly for aggregated traffic measurement, never for invasive advertising profiling.</p>
+      <p>We use minimal cookies. If you consent to our cookie banner, a preference cookie is saved (containing no personal data). We also store an analytics consent flag in your browser's local storage. We do not use advertising trackers or invasive profiling.</p>
 
       <h3>3. Data Usage & Storage</h3>
-      <p>Any data we do collect is used exclusively to maintain and improve SuburbSense, or to send you communications you specifically requested. We will never sell your data, use it to build advertising profiles, or share it with unsolicited third-party marketers. All infrastructure is hosted securely, and our primary databases contain only public government property data—no user data.</p>
+      <p>Any data we do collect is used exclusively to maintain and improve SuburbSense, or to send you communications you specifically requested. We will never sell your data, use it to build advertising profiles, or share it with unsolicited third-party marketers. All infrastructure is hosted securely in Australia.</p>
 
       <h3>4. Local-Only Calculators</h3>
       <p>Our financial calculators (Stamp Duty, Borrowing Power, etc.) process your inputs entirely within your browser. The numbers you type are never transmitted to our servers or saved in any database. Once you refresh or close the tab, that data is gone forever.</p>

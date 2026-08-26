@@ -190,7 +190,7 @@ def get_suburb_profile(slug: str, db: Session = Depends(get_realestate_db)):
                average_household_size, area_sqkm, typical_mortgage_band,
                school_count, avg_icsea, top_school_name, school_quality,
                parks_count, parks_coverage_pct, transit_accessibility, cbd_distance_mins, metro_cbd, safety_score, crime_rate,
-               coordinates, demographics_detail, schools, news_sentiment,
+               coordinates, demographics_detail, schools,
                ST_AsGeoJSON(ST_Transform(boundary_geom, 4326)) AS boundary_geojson
         FROM suburbs_ui_v3
         WHERE state = :state
@@ -654,8 +654,7 @@ def get_suburb_profile(slug: str, db: Session = Depends(get_realestate_db)):
             "choice_benchmark": CHOICE_BENCHMARK,
             "boundary": boundary,
             "school_catchments": school_catchments,
-            "transit_stops": transit_stops,
-            "news_sentiment": row.news_sentiment if hasattr(row, 'news_sentiment') else None
+            "transit_stops": transit_stops
         }
         
     except Exception as e:
