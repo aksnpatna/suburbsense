@@ -60,6 +60,80 @@ export function StateHub() {
           </div>
         </div>
 
+        {stateName === 'NSW' && (
+          <div style={{ marginBottom: '3rem' }}>
+            <h2>Major Regions in {stateName}</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '1.5rem' }}>
+              <Link to="/region/greater-sydney" className="btn btn-outline" style={{ display: 'flex', justifyContent: 'center' }}>🗺️ Greater Sydney</Link>
+            </div>
+          </div>
+        )}
+
+        {stateName === 'VIC' && (
+          <div style={{ marginBottom: '3rem' }}>
+            <h2>Major Regions in {stateName}</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '1.5rem' }}>
+              <Link to="/region/greater-melbourne" className="btn btn-outline" style={{ display: 'flex', justifyContent: 'center' }}>🗺️ Greater Melbourne</Link>
+            </div>
+          </div>
+        )}
+
+        {stateName === 'QLD' && (
+          <div style={{ marginBottom: '3rem' }}>
+            <h2>Major Regions in {stateName}</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '1.5rem' }}>
+              <Link to="/region/greater-brisbane" className="btn btn-outline" style={{ display: 'flex', justifyContent: 'center' }}>🗺️ Greater Brisbane</Link>
+              <Link to="/region/gold-coast" className="btn btn-outline" style={{ display: 'flex', justifyContent: 'center' }}>🗺️ Gold Coast</Link>
+              <Link to="/region/sunshine-coast" className="btn btn-outline" style={{ display: 'flex', justifyContent: 'center' }}>🗺️ Sunshine Coast</Link>
+            </div>
+          </div>
+        )}
+
+        {stateName === 'SA' && (
+          <div style={{ marginBottom: '3rem' }}>
+            <h2>Major Regions in {stateName}</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '1.5rem' }}>
+              <Link to="/region/greater-adelaide" className="btn btn-outline" style={{ display: 'flex', justifyContent: 'center' }}>🗺️ Greater Adelaide</Link>
+            </div>
+          </div>
+        )}
+
+        {stateName === 'WA' && (
+          <div style={{ marginBottom: '3rem' }}>
+            <h2>Major Regions in {stateName}</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '1.5rem' }}>
+              <Link to="/region/greater-perth" className="btn btn-outline" style={{ display: 'flex', justifyContent: 'center' }}>🗺️ Greater Perth</Link>
+            </div>
+          </div>
+        )}
+
+        {stateName === 'NT' && (
+          <div style={{ marginBottom: '3rem' }}>
+            <h2>Major Regions in {stateName}</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '1.5rem' }}>
+              <Link to="/region/greater-darwin" className="btn btn-outline" style={{ display: 'flex', justifyContent: 'center' }}>🗺️ Greater Darwin</Link>
+            </div>
+          </div>
+        )}
+
+        {stateName === 'TAS' && (
+          <div style={{ marginBottom: '3rem' }}>
+            <h2>Major Regions in {stateName}</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '1.5rem' }}>
+              <Link to="/region/greater-hobart" className="btn btn-outline" style={{ display: 'flex', justifyContent: 'center' }}>🗺️ Greater Hobart</Link>
+            </div>
+          </div>
+        )}
+
+        {stateName === 'ACT' && (
+          <div style={{ marginBottom: '3rem' }}>
+            <h2>Major Regions in {stateName}</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '1.5rem' }}>
+              <Link to="/region/canberra" className="btn btn-outline" style={{ display: 'flex', justifyContent: 'center' }}>🗺️ Canberra & ACT</Link>
+            </div>
+          </div>
+        )}
+
         <h2>All Suburbs in {stateName}</h2>
         {loading ? (
           <p>Loading suburbs...</p>

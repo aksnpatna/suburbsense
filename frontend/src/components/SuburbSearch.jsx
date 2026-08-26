@@ -94,12 +94,16 @@ export function SuburbSearch({ onSelect, placeholder = "Search suburbs...", clas
               key={suburb.id}
               className="search-result-item"
               onClick={() => handleSelect(suburb)}
+              style={suburb.is_region ? { background: 'rgba(37, 99, 235, 0.05)', borderLeft: '4px solid var(--primary-color)' } : {}}
             >
-              <div className="result-name">{suburb.name}</div>
-              <div className="result-location">
-                {suburb.state}, {suburb.postcode}
+              <div className="result-name">
+                {suburb.is_region && <span style={{ marginRight: '8px' }}>🗺️</span>}
+                {suburb.name}
               </div>
-              {suburb.demographics?.population_2021 && (
+              <div className="result-location">
+                {suburb.is_region ? `Region in ${suburb.state}` : `${suburb.state}, ${suburb.postcode}`}
+              </div>
+              {suburb.demographics?.population_2021 && !suburb.is_region && (
                 <div className="result-population">
                   {suburb.demographics.population_2021.toLocaleString()} residents
                 </div>

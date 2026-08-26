@@ -20,35 +20,71 @@ import psycopg
 router = APIRouter(prefix="/api/suburbs", tags=["Suburbs"])
 
 # --- Suburb search (autocomplete fallback) ---
+from app.constants import MAJOR_REGIONS
+import math
+
+def haversine(lat1, lon1, lat2, lon2):
+    R = 6371
+    dLat = math.radians(lat2 - lat1)
+    dLon = math.radians(lon2 - lon1)
+    a = math.sin(dLat/2) * math.sin(dLat/2) + math.cos(math.radians(lat1)) \
+        * math.cos(math.radians(lat2)) * math.sin(dLon/2) * math.sin(dLon/2)
+    return R * 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+
 @router.get("/search")
-def search_suburbs(q: str, db: Session = Depends(get_realestate_db), limit: int = 10):
-    if len(q) < 2:
+def search_suburbs(q: str = "", state: str = None, region: str = None, db: Session = Depends(get_realestate_db), limit: int = 10):
+    if not q and not state and not region:
         return {"results": []}
     
     q = q.strip().lower()
-    # Launch-ready criteria + search by name/postcode
-    from sqlalchemy import text
+    
+    # Check for region matches if searching by text
+    region_results = []
+    if q and len(q) >= 2:
+        for slug, r_data in MAJOR_REGIONS.items():
+            if q in r_data["name"].lower():
+                region_results.append({
+                    "id": f"region-{slug}",
+                    "is_region": True,
+                    "name": r_data["name"],
+                    "state": r_data["state"],
+                    "slug": slug,
+                })
 
-    query = text("""
+    from sqlalchemy import text
+    
+    # Build query dynamically
+    where_clauses = ["(dq_score >= 90 OR dq_score IS NULL)", "coordinates IS NOT NULL"]
+    params = {"limit": limit}
+    
+    if q:
+        where_clauses.append("(LOWER(name) LIKE :search OR LOWER(postcode) LIKE :search)")
+        params["search"] = f"%{q}%"
+    
+    if state:
+        where_clauses.append("UPPER(state) = :state")
+        params["state"] = state.upper()
+
+    # If region is provided, we'll fetch more and filter in memory since coordinates parsing is tricky in raw SQL here
+    if region and region in MAJOR_REGIONS:
+        params["state"] = MAJOR_REGIONS[region]["state"].upper()
+        if "UPPER(state) = :state" not in where_clauses:
+            where_clauses.append("UPPER(state) = :state")
+        # Fetch up to 1000 suburbs in the state to filter by distance
+        params["limit"] = 1000
+
+    query = text(f"""
         SELECT id, name, state, postcode, coordinates
         FROM suburbs_ui_v3
-        WHERE (
-            LOWER(name) LIKE :search
-            OR LOWER(postcode) LIKE :search
-        )
-        AND (dq_score >= 90 OR dq_score IS NULL)
-        AND coordinates IS NOT NULL
+        WHERE {' AND '.join(where_clauses)}
         ORDER BY population_2021 DESC
         LIMIT :limit
     """)
-    params = {"search": f"%{q}%", "limit": limit}
     
     try:
         cursor = db.execute(query, params)
         results = []
         for row in cursor:
-            # Handle coordinates parsing - row.coordinates could be a list or JSON string
-            # Handle coordinates parsing - row.coordinates could be a list or JSON string
             if isinstance(row.coordinates, str):
                 coords = json.loads(row.coordinates)
             elif isinstance(row.coordinates, list):
@@ -56,15 +92,31 @@ def search_suburbs(q: str, db: Session = Depends(get_realestate_db), limit: int 
             else:
                 continue
                 
+            lat, lon = coords[0], coords[1]
+            
+            # If region filter is active, check distance
+            if region and region in MAJOR_REGIONS:
+                r_data = MAJOR_REGIONS[region]
+                dist = haversine(r_data["lat"], r_data["lon"], lat, lon)
+                if dist > r_data["radius_km"]:
+                    continue
+
             results.append({
                 "id": row.id,
                 "name": row.name,
                 "state": row.state,
                 "postcode": row.postcode,
                 "slug": generate_slug(row.name, row.state, row.postcode),
-                "coordinates": {"lat": coords[0], "lng": coords[1]}
+                "coordinates": {"lat": lat, "lng": lon}
             })
-        return {"results": results}
+            
+            # Stop if we hit the limit for region filtering
+            if region and len(results) >= limit:
+                break
+                
+        # Combine region matches and suburb matches
+        final_results = region_results + results
+        return {"results": final_results[:limit]}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

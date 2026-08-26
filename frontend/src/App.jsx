@@ -12,6 +12,7 @@ import { AINewsSection } from './components/AINewsSection';
 import { GlobalMarketPulse } from './components/GlobalMarketPulse';
 import { TrendingTicker } from './components/TrendingTicker';
 import { PartnersPage } from './components/PartnersPage';
+import { RegionHub } from './pages/RegionHub';
 
 function useScrollReveal() {
   const observerRef = useRef(null);
@@ -206,6 +207,7 @@ function App() {
             <Route path="/land-tax" element={<LandTaxCalculator />} />
             <Route path="/council-rates" element={<CouncilRatesEstimator />} />
             <Route path="/suburb/compare" element={<CompareSuburbs />} />
+            <Route path="/region/:regionSlug" element={<RegionHub />} />
             <Route path="/partners" element={<PartnersPage />} />
             <Route path="/privacy" element={<LegalPage type="privacy" />} />
             <Route path="/terms" element={<LegalPage type="terms" />} />
@@ -325,8 +327,17 @@ function HomePage() {
           
           {selectedSuburb && (
             <div className="selected-suburb">
-              <h3>Selected: {selectedSuburb.name}, {selectedSuburb.state} {selectedSuburb.postcode}</h3>
-              <p>Click <a href={`/suburb/${selectedSuburb.slug}`} className="btn btn-primary">View Detailed Profile</a> to explore calculators and data</p>
+              {selectedSuburb.is_region ? (
+                <>
+                  <h3>Selected Region: {selectedSuburb.name}, {selectedSuburb.state}</h3>
+                  <p>Click <Link to={`/region/${selectedSuburb.slug}`} className="btn btn-primary">View Region Guide</Link> to explore suburbs</p>
+                </>
+              ) : (
+                <>
+                  <h3>Selected: {selectedSuburb.name}, {selectedSuburb.state} {selectedSuburb.postcode}</h3>
+                  <p>Click <Link to={`/suburb/${selectedSuburb.slug}`} className="btn btn-primary">View Detailed Profile</Link> to explore calculators and data</p>
+                </>
+              )}
             </div>
           )}
         </div>

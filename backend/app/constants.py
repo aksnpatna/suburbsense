@@ -98,6 +98,19 @@ SUPERMARKET_BRANDS = [
     ("drake", "Drakes Supermarkets"),
     ("foodland", "Foodland"),
 ]
+# Hardcoded major regions for navigation and spatial search (lat, lon, radius_km)
+MAJOR_REGIONS = {
+    "greater-sydney": {"name": "Greater Sydney", "state": "NSW", "lat": -33.8688, "lon": 151.2093, "radius_km": 50},
+    "greater-melbourne": {"name": "Greater Melbourne", "state": "VIC", "lat": -37.8136, "lon": 144.9631, "radius_km": 50},
+    "greater-brisbane": {"name": "Greater Brisbane", "state": "QLD", "lat": -27.4698, "lon": 153.0251, "radius_km": 50},
+    "gold-coast": {"name": "Gold Coast", "state": "QLD", "lat": -28.0167, "lon": 153.4000, "radius_km": 40},
+    "sunshine-coast": {"name": "Sunshine Coast", "state": "QLD", "lat": -26.6500, "lon": 153.0667, "radius_km": 50},
+    "greater-adelaide": {"name": "Greater Adelaide", "state": "SA", "lat": -34.9285, "lon": 138.6007, "radius_km": 40},
+    "greater-perth": {"name": "Greater Perth", "state": "WA", "lat": -31.9505, "lon": 115.8605, "radius_km": 60},
+    "greater-darwin": {"name": "Greater Darwin", "state": "NT", "lat": -12.4634, "lon": 130.8456, "radius_km": 30},
+    "greater-hobart": {"name": "Greater Hobart", "state": "TAS", "lat": -42.8821, "lon": 147.3272, "radius_km": 30},
+    "canberra": {"name": "Canberra & ACT", "state": "ACT", "lat": -35.2809, "lon": 149.1300, "radius_km": 40},
+}
 
 # Slug generation helper for suburb URLs (name-state-postcode)
 def generate_slug(name: str, state: str, postcode: str) -> str:
