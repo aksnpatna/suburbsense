@@ -8,6 +8,8 @@ import { SaveSuburbButton, SuburbAlertSignup } from './components/SaveSuburb';
 import { SuburbLibraryRails } from './components/SuburbLibraryRails';
 import { ThemeToggle } from './components/ThemeToggle';
 import { recordRecentVisit } from './hooks/useSuburbLibrary';
+import { AINewsSection } from './components/AINewsSection';
+import { GlobalMarketPulse } from './components/GlobalMarketPulse';
 
 function useScrollReveal() {
   const observerRef = useRef(null);
@@ -33,12 +35,9 @@ function useScrollReveal() {
   }, []);
 }
 
-function useScrollRevealLazy() {
-  const observerRef = useRef(null);
-
-  const init = useCallback(() => {
-    if (observerRef.current) return;
-    observerRef.current = new IntersectionObserver(
+function useScrollRevealLazy(locationPath) {
+  useEffect(() => {
+    const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -49,19 +48,35 @@ function useScrollRevealLazy() {
       { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
     );
 
-    const elements = document.querySelectorAll(
-      '.reveal-up, .reveal-left, .reveal-right, .reveal-scale, .reveal-stagger'
-    );
-    elements.forEach((el) => observerRef.current.observe(el));
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(init, 100);
-    return () => {
-      clearTimeout(timer);
-      observerRef.current?.disconnect();
+    const observeElements = () => {
+      const elements = document.querySelectorAll(
+        '.reveal-up, .reveal-left, .reveal-right, .reveal-scale, .reveal-stagger'
+      );
+      elements.forEach((el) => {
+        if (!el.classList.contains('revealed')) {
+          observer.observe(el);
+        }
+      });
     };
-  }, [init]);
+
+    // Initial check
+    observeElements();
+
+    // Watch for DOM changes (like async data loading)
+    const mutationObserver = new MutationObserver(() => {
+      observeElements();
+    });
+
+    mutationObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => {
+      observer.disconnect();
+      mutationObserver.disconnect();
+    };
+  }, [locationPath]);
 }
 const AmenityMap = React.lazy(() => import('./components/AmenityMap').then(m => ({ default: m.AmenityMap })));
 import { LegalPage } from './pages/LegalPage';
@@ -91,7 +106,7 @@ function App() {
   const [subscribeMsg, setSubscribeMsg] = useState('');
   const [subscribeLoading, setSubscribeLoading] = useState(false);
 
-  useScrollRevealLazy();
+  useScrollRevealLazy(location.pathname);
   
   const isHome = location.pathname === '/';
   const isSuburb = location.pathname.startsWith('/suburb/');
@@ -318,6 +333,8 @@ function HomePage() {
           )}
         </div>
       </section>
+
+      <GlobalMarketPulse />
 
       <SuburbLibraryRails />
 
@@ -814,12 +831,14 @@ function SuburbProfile() {
       </section>
 
       <div className="suburb-content">
+        
+        {data.news_sentiment && <AINewsSection newsSentiment={data.news_sentiment} />}
 
         <section id="map" className="map-section" ref={mapRef}>
           <h2 className="section-title">
             {selectedSchoolZone ? `Catchment: ${selectedSchoolZone.name}` : 'Location, Schools & Transit'}
           </h2>
-          <React.Suspense fallback={<div className="map-placeholder" style={{ height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8fafc', borderRadius: '12px', border: '1px solid #e2e8f0', color: '#64748b' }}>Loading map interactives...</div>}>
+          <React.Suspense fallback={<div className="map-placeholder" style={{ height: '600px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8fafc', borderRadius: '12px', border: '1px solid #e2e8f0', color: '#64748b' }}>Loading map interactives...</div>}>
             <AmenityMap
               center={data.coordinates}
               amenities={data.amenities.per_category}
@@ -1044,7 +1063,7 @@ function SuburbProfile() {
                       <span className="stat-val">{data.demographics.typical_mortgage_band}/mo</span>
                     </div>
                   )}
-                  {data.demographics?.population_cagr !== undefined && (
+                  {data.demographics?.population_cagr != null && (
                     <div className="demo-stat">
                       <span className="stat-label">Population Growth</span>
                       <span className="stat-val">{data.demographics.population_cagr.toFixed(1)}% CAGR</span>

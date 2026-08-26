@@ -131,7 +131,7 @@ export function AmenityMap({ center, amenities, boundary, schools, transitStops,
       <MapContainer 
         center={[center.lat, center.lng]} 
         zoom={14} 
-        style={{ height: '400px', width: '100%', borderRadius: '12px', zIndex: 1 }}
+        style={{ height: '600px', width: '100%', borderRadius: '12px', zIndex: 1 }}
       >
         <ChangeView center={center} boundary={boundary} schoolZone={schoolZone} />
         

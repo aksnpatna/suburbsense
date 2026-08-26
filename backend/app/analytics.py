@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Request
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from sqlalchemy import text
-from app.db import get_utility_db
+from app.db import get_utility_db, get_realestate_db
 
 router = APIRouter(prefix="/api", tags=["Analytics"])
 
@@ -86,3 +86,22 @@ def get_analytics_summary(db: Session = Depends(get_utility_db)):
             "month": visitors.month if visitors else 0
         }
     }
+
+@router.get("/news/global")
+def get_global_news(db: Session = Depends(get_realestate_db)):
+    results = db.execute(text("""
+        SELECT topic, sentiment_label, sentiment_score, summary, articles_analyzed, last_updated 
+        FROM global_market_news 
+        ORDER BY topic ASC
+    """)).fetchall()
+    
+    return [
+        {
+            "topic": r.topic,
+            "sentiment_label": r.sentiment_label,
+            "sentiment_score": r.sentiment_score,
+            "summary": r.summary,
+            "articles_analyzed": r.articles_analyzed,
+            "last_updated": r.last_updated
+        } for r in results
+    ]
