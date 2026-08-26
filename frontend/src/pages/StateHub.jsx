@@ -30,14 +30,14 @@ export function StateHub() {
   return (
     <div className="state-hub">
       <Helmet>
-        <title>Best Suburbs in {stateName} | SuburbSense</title>
-        <meta name="description" content={`Explore demographics, school catchments, crime rates, and living costs for suburbs across ${stateName}. Find your perfect place to live.`} />
+        <title>Best Suburbs in {stateName} 2026 — Suburb Guide | SuburbSense</title>
+        <meta name="description" content={`Explore demographics, school catchments, transit scores, crime rates and living costs for suburbs across ${stateName}. Free suburb intelligence — no login required.`} />
       </Helmet>
 
       <div className="hero">
         <div className="container">
-          <h1>Suburbs in {stateName}</h1>
-          <p>Discover real estate data, liveability scores, and demographics for {stateName}.</p>
+          <h1>Best Suburbs in {stateName} — 2026 Guide</h1>
+          <p>Discover school catchments, transit scores, demographics and liveability data for suburbs across {stateName}.</p>
         </div>
       </div>
 
@@ -60,85 +60,73 @@ export function StateHub() {
           </div>
         </div>
 
-        {stateName === 'NSW' && (
+        {/* === Per-state region cards === */}
+        {({
+          NSW: [{ slug: 'greater-sydney', label: 'Greater Sydney', emoji: '🌉', sub: '400+ suburbs' }],
+          VIC: [{ slug: 'greater-melbourne', label: 'Greater Melbourne', emoji: '🏙️', sub: '300+ suburbs' }],
+          QLD: [
+            { slug: 'greater-brisbane', label: 'Greater Brisbane', emoji: '☀️', sub: '200+ suburbs' },
+            { slug: 'gold-coast', label: 'Gold Coast', emoji: '🏖️', sub: '80+ suburbs' },
+            { slug: 'sunshine-coast', label: 'Sunshine Coast', emoji: '🌊', sub: '60+ suburbs' },
+          ],
+          SA: [{ slug: 'greater-adelaide', label: 'Greater Adelaide', emoji: '🌿', sub: '150+ suburbs' }],
+          WA: [{ slug: 'greater-perth', label: 'Greater Perth', emoji: '🌊', sub: '200+ suburbs' }],
+          NT: [{ slug: 'greater-darwin', label: 'Greater Darwin', emoji: '🌴', sub: '30+ suburbs' }],
+          TAS: [{ slug: 'greater-hobart', label: 'Greater Hobart', emoji: '🏔️', sub: '50+ suburbs' }],
+          ACT: [{ slug: 'canberra', label: 'Canberra & ACT', emoji: '🏛️', sub: '100+ suburbs' }],
+        }[stateName] || []).length > 0 && (
           <div style={{ marginBottom: '3rem' }}>
-            <h2>Major Regions in {stateName}</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '1.5rem' }}>
-              <Link to="/region/greater-sydney" className="btn btn-outline" style={{ display: 'flex', justifyContent: 'center' }}>🗺️ Greater Sydney</Link>
-            </div>
-          </div>
-        )}
-
-        {stateName === 'VIC' && (
-          <div style={{ marginBottom: '3rem' }}>
-            <h2>Major Regions in {stateName}</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '1.5rem' }}>
-              <Link to="/region/greater-melbourne" className="btn btn-outline" style={{ display: 'flex', justifyContent: 'center' }}>🗺️ Greater Melbourne</Link>
-            </div>
-          </div>
-        )}
-
-        {stateName === 'QLD' && (
-          <div style={{ marginBottom: '3rem' }}>
-            <h2>Major Regions in {stateName}</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '1.5rem' }}>
-              <Link to="/region/greater-brisbane" className="btn btn-outline" style={{ display: 'flex', justifyContent: 'center' }}>🗺️ Greater Brisbane</Link>
-              <Link to="/region/gold-coast" className="btn btn-outline" style={{ display: 'flex', justifyContent: 'center' }}>🗺️ Gold Coast</Link>
-              <Link to="/region/sunshine-coast" className="btn btn-outline" style={{ display: 'flex', justifyContent: 'center' }}>🗺️ Sunshine Coast</Link>
-            </div>
-          </div>
-        )}
-
-        {stateName === 'SA' && (
-          <div style={{ marginBottom: '3rem' }}>
-            <h2>Major Regions in {stateName}</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '1.5rem' }}>
-              <Link to="/region/greater-adelaide" className="btn btn-outline" style={{ display: 'flex', justifyContent: 'center' }}>🗺️ Greater Adelaide</Link>
-            </div>
-          </div>
-        )}
-
-        {stateName === 'WA' && (
-          <div style={{ marginBottom: '3rem' }}>
-            <h2>Major Regions in {stateName}</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '1.5rem' }}>
-              <Link to="/region/greater-perth" className="btn btn-outline" style={{ display: 'flex', justifyContent: 'center' }}>🗺️ Greater Perth</Link>
-            </div>
-          </div>
-        )}
-
-        {stateName === 'NT' && (
-          <div style={{ marginBottom: '3rem' }}>
-            <h2>Major Regions in {stateName}</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '1.5rem' }}>
-              <Link to="/region/greater-darwin" className="btn btn-outline" style={{ display: 'flex', justifyContent: 'center' }}>🗺️ Greater Darwin</Link>
-            </div>
-          </div>
-        )}
-
-        {stateName === 'TAS' && (
-          <div style={{ marginBottom: '3rem' }}>
-            <h2>Major Regions in {stateName}</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '1.5rem' }}>
-              <Link to="/region/greater-hobart" className="btn btn-outline" style={{ display: 'flex', justifyContent: 'center' }}>🗺️ Greater Hobart</Link>
-            </div>
-          </div>
-        )}
-
-        {stateName === 'ACT' && (
-          <div style={{ marginBottom: '3rem' }}>
-            <h2>Major Regions in {stateName}</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '1.5rem' }}>
-              <Link to="/region/canberra" className="btn btn-outline" style={{ display: 'flex', justifyContent: 'center' }}>🗺️ Canberra & ACT</Link>
+            <h2>Browse by Region</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginTop: '1.25rem' }}>
+              {({
+                NSW: [{ slug: 'greater-sydney', label: 'Greater Sydney', emoji: '🌉', sub: '400+ suburbs' }],
+                VIC: [{ slug: 'greater-melbourne', label: 'Greater Melbourne', emoji: '🏙️', sub: '300+ suburbs' }],
+                QLD: [
+                  { slug: 'greater-brisbane', label: 'Greater Brisbane', emoji: '☀️', sub: '200+ suburbs' },
+                  { slug: 'gold-coast', label: 'Gold Coast', emoji: '🏖️', sub: '80+ suburbs' },
+                  { slug: 'sunshine-coast', label: 'Sunshine Coast', emoji: '🌊', sub: '60+ suburbs' },
+                ],
+                SA: [{ slug: 'greater-adelaide', label: 'Greater Adelaide', emoji: '🌿', sub: '150+ suburbs' }],
+                WA: [{ slug: 'greater-perth', label: 'Greater Perth', emoji: '🌊', sub: '200+ suburbs' }],
+                NT: [{ slug: 'greater-darwin', label: 'Greater Darwin', emoji: '🌴', sub: '30+ suburbs' }],
+                TAS: [{ slug: 'greater-hobart', label: 'Greater Hobart', emoji: '🏔️', sub: '50+ suburbs' }],
+                ACT: [{ slug: 'canberra', label: 'Canberra & ACT', emoji: '🏛️', sub: '100+ suburbs' }],
+              }[stateName] || []).map(r => (
+                <Link
+                  key={r.slug}
+                  to={`/region/${r.slug}`}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '1rem',
+                    padding: '1.25rem 1.5rem',
+                    background: 'var(--surface-color)',
+                    borderRadius: '14px',
+                    border: '1px solid var(--border-color)',
+                    textDecoration: 'none',
+                    color: 'var(--text-primary)',
+                    transition: 'border-color 0.15s, transform 0.15s',
+                  }}
+                  onMouseOver={e => { e.currentTarget.style.borderColor = 'var(--primary-color)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                  onMouseOut={e => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.transform = 'none'; }}
+                >
+                  <span style={{ fontSize: '2rem' }}>{r.emoji}</span>
+                  <div>
+                    <div style={{ fontWeight: 700 }}>{r.label}</div>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{r.sub}</div>
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
         )}
 
         <h2>All Suburbs in {stateName}</h2>
-        {loading ? (
-          <p>Loading suburbs...</p>
-        ) : (
           <div className="suburb-grid">
+            {loading && <p style={{ gridColumn: '1/-1', color: 'var(--text-secondary)' }}>Loading suburbs...</p>}
+            {!loading && suburbs.length === 0 && (
+              <p style={{ gridColumn: '1/-1', color: 'var(--text-secondary)', padding: '2rem 0' }}>
+                No suburbs loaded yet for {stateName}. Try browsing a region above.
+              </p>
+            )}
             {suburbs.map(suburb => (
               <Link 
                 key={suburb.id} 
@@ -153,7 +141,6 @@ export function StateHub() {
               </Link>
             ))}
           </div>
-        )}
       </div>
     </div>
   );

@@ -174,7 +174,7 @@ function App() {
                   Compare
                 </Link>
                 <Link to="/partners" className={`nav-link ${location.pathname === '/partners' ? 'active' : ''}`} onClick={closeMobileMenu}>
-                  For Business
+                  Find Professionals
                 </Link>
                 <div className={`nav-dropdown ${dropdownOpen ? 'active' : ''}`}>
                   <button className="nav-link dropdown-toggle" onClick={() => setDropdownOpen(!dropdownOpen)}>
@@ -292,7 +292,7 @@ function HomePage() {
       <div className="container">
         <Helmet>
           <title>SuburbSense — Australian Suburb Intelligence</title>
-          <meta name="description" content="Free suburb profiles with school catchments, transit scores, stamp duty, affordability, ROI calculators and ABS census data. No login required." />
+          <meta name="description" content="Research any Australian suburb with real ABS census data, ACARA school ratings, transit scores, crime stats and cost-of-living tools. Free, no login required." />
           <link rel="canonical" href="https://suburbsense.com.au" />
         </Helmet>
 
@@ -300,10 +300,10 @@ function HomePage() {
         <div className="hero-content">
           <div className="hero-badge">🏆 Free Australian Suburb Intelligence</div>
           <h1 className="hero-title">
-            Know <span style={{ background: 'linear-gradient(135deg, var(--primary-color), var(--info-color))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>the true cost</span> of living in any suburb
+            Find the best suburbs to <span style={{ background: 'linear-gradient(135deg, var(--primary-color), var(--info-color))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>live, invest &amp; grow</span>
           </h1>
           <p className="hero-subtitle">
-            ABS census, ACARA schools, transit scores, and bill comparisons — <strong>all free, no login</strong>
+            Real ABS census data, ACARA school ratings, transit scores &amp; cost-of-living tools — <strong>all free, no login</strong>
           </p>
           
           <div className="hero-metrics">
@@ -322,15 +322,39 @@ function HomePage() {
           </div>
           
           <div className="search-box">
-            <SuburbSearch onSelect={handleSuburbSelect} placeholder="Search a suburb to see key stats..." />
-            <div className="quick-links" style={{ marginTop: '1rem', display: 'flex', gap: '0.8rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-              <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: '28px' }}>Popular Regions:</span>
-              <Link to="/region/greater-sydney" style={{ padding: '0.2rem 0.8rem', background: 'var(--surface-alt)', borderRadius: '20px', textDecoration: 'none', color: 'var(--text-primary)', fontSize: '0.9rem', border: '1px solid var(--border-color)', transition: 'all 0.2s' }} onMouseOver={e => e.target.style.borderColor = 'var(--primary-color)'} onMouseOut={e => e.target.style.borderColor = 'var(--border-color)'}>Sydney</Link>
-              <Link to="/region/greater-melbourne" style={{ padding: '0.2rem 0.8rem', background: 'var(--surface-alt)', borderRadius: '20px', textDecoration: 'none', color: 'var(--text-primary)', fontSize: '0.9rem', border: '1px solid var(--border-color)', transition: 'all 0.2s' }} onMouseOver={e => e.target.style.borderColor = 'var(--primary-color)'} onMouseOut={e => e.target.style.borderColor = 'var(--border-color)'}>Melbourne</Link>
-              <Link to="/region/greater-brisbane" style={{ padding: '0.2rem 0.8rem', background: 'var(--surface-alt)', borderRadius: '20px', textDecoration: 'none', color: 'var(--text-primary)', fontSize: '0.9rem', border: '1px solid var(--border-color)', transition: 'all 0.2s' }} onMouseOver={e => e.target.style.borderColor = 'var(--primary-color)'} onMouseOut={e => e.target.style.borderColor = 'var(--border-color)'}>Brisbane</Link>
-              <Link to="/region/greater-adelaide" style={{ padding: '0.2rem 0.8rem', background: 'var(--surface-alt)', borderRadius: '20px', textDecoration: 'none', color: 'var(--text-primary)', fontSize: '0.9rem', border: '1px solid var(--border-color)', transition: 'all 0.2s' }} onMouseOver={e => e.target.style.borderColor = 'var(--primary-color)'} onMouseOut={e => e.target.style.borderColor = 'var(--border-color)'}>Adelaide</Link>
-              <Link to="/region/greater-perth" style={{ padding: '0.2rem 0.8rem', background: 'var(--surface-alt)', borderRadius: '20px', textDecoration: 'none', color: 'var(--text-primary)', fontSize: '0.9rem', border: '1px solid var(--border-color)', transition: 'all 0.2s' }} onMouseOver={e => e.target.style.borderColor = 'var(--primary-color)'} onMouseOut={e => e.target.style.borderColor = 'var(--border-color)'}>Perth</Link>
-              <Link to="/region/greater-hobart" style={{ padding: '0.2rem 0.8rem', background: 'var(--surface-alt)', borderRadius: '20px', textDecoration: 'none', color: 'var(--text-primary)', fontSize: '0.9rem', border: '1px solid var(--border-color)', transition: 'all 0.2s' }} onMouseOver={e => e.target.style.borderColor = 'var(--primary-color)'} onMouseOut={e => e.target.style.borderColor = 'var(--border-color)'}>Hobart</Link>
+            <SuburbSearch onSelect={handleSuburbSelect} placeholder="Search a suburb, region or postcode..." />
+            <p style={{ color: 'var(--text-tertiary)', fontSize: '0.82rem', marginTop: '0.5rem', marginBottom: '0.75rem' }}>Powered by ABS Census 2021 · ACARA Schools · OpenStreetMap · AER Energy Data</p>
+            <div style={{ marginTop: '0.5rem' }}>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>🗺️ Browse Popular Regions</p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.6rem' }}>
+                {[
+                  { name: 'Sydney', slug: 'greater-sydney', emoji: '🌉', sub: 'NSW' },
+                  { name: 'Melbourne', slug: 'greater-melbourne', emoji: '🏙️', sub: 'VIC' },
+                  { name: 'Brisbane', slug: 'greater-brisbane', emoji: '☀️', sub: 'QLD' },
+                  { name: 'Adelaide', slug: 'greater-adelaide', emoji: '🌿', sub: 'SA' },
+                  { name: 'Perth', slug: 'greater-perth', emoji: '🌊', sub: 'WA' },
+                  { name: 'Hobart', slug: 'greater-hobart', emoji: '🏔️', sub: 'TAS' },
+                ].map(r => (
+                  <Link key={r.slug} to={`/region/${r.slug}`} style={{
+                    display: 'flex', alignItems: 'center', gap: '0.5rem',
+                    padding: '0.6rem 0.8rem',
+                    background: 'var(--surface-alt)',
+                    borderRadius: '10px',
+                    border: '1px solid var(--border-color)',
+                    textDecoration: 'none',
+                    color: 'var(--text-primary)',
+                    fontSize: '0.85rem',
+                    fontWeight: 600,
+                    transition: 'border-color 0.15s, transform 0.15s',
+                  }}
+                  onMouseOver={e => { e.currentTarget.style.borderColor = 'var(--primary-color)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                  onMouseOut={e => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.transform = 'none'; }}
+                  >
+                    <span style={{ fontSize: '1.3rem' }}>{r.emoji}</span>
+                    <span>{r.name} <span style={{ color: 'var(--text-secondary)', fontWeight: 400 }}>{r.sub}</span></span>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
           
@@ -356,7 +380,27 @@ function HomePage() {
 
       <SuburbLibraryRails />
 
-      <section className="guides-hub reveal-up" style={{ padding: '4rem 0', background: 'var(--surface-alt)' }}>
+      {/* How It Works */}
+      <section style={{ padding: '3.5rem 0 3rem', background: 'var(--surface-color)', borderBottom: '1px solid var(--border-color)' }}>
+        <div className="container">
+          <p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1.5rem' }}>How it works</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', maxWidth: '800px', margin: '0 auto' }}>
+            {[
+              { step: '1', icon: '🔍', title: 'Search any suburb', desc: 'Type a suburb, region or postcode' },
+              { step: '2', icon: '📊', title: 'See real data', desc: 'Demographics, schools, safety, transit' },
+              { step: '3', icon: '💡', title: 'Compare & decide', desc: 'Use our free calculators to plan your move' },
+            ].map(s => (
+              <div key={s.step} style={{ textAlign: 'center', padding: '1.5rem 1rem' }}>
+                <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{s.icon}</div>
+                <div style={{ fontWeight: 700, marginBottom: '0.3rem', color: 'var(--text-primary)' }}>{s.title}</div>
+                <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{s.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="guides-hub" style={{ padding: '4rem 0', background: 'var(--surface-alt)' }}>
         <div className="section-header">
           <h2>Discover Suburb Guides</h2>
           <p>Explore our data-driven rankings for the best suburbs across Australia.</p>
@@ -391,7 +435,7 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="calculators-hub reveal-up">
+      <section className="calculators-hub">
         <div className="section-header">
           <h2>Decision Tools</h2>
           <p>Know the true cost before you commit. For renters comparing suburbs, first home buyers checking eligibility, and investors analysing returns.</p>
@@ -456,7 +500,7 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="features reveal-up">
+      <section className="features">
         <div className="section-header">
           <h2>Suburb Profiles</h2>
           <p>School catchments, transit access, and census demographics — for when you're comparing suburbs.</p>

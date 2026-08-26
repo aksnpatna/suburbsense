@@ -31,6 +31,10 @@ class Settings(BaseSettings):
     # Tavily API for news aggregation
     tavily_api_key: str = ""
 
+    # Local Whisper for voice-to-text (feedback widget)
+    whisper_url: str = "http://localhost:11434/v1/audio/transcriptions"
+    whisper_model: str = "whisper-small"
+
     # Attribution constants for the site (required by data sources)
     attributions: list = [
         {"name": "OpenStreetMap contributors", "url": "https://www.openstreetmap.org/copyright"},

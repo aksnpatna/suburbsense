@@ -11,3 +11,4 @@ psycopg[binary]
 psycopg2-binary
 slowapi\nsecure
 tavily-python
+aiohttp

@@ -1,8 +1,12 @@
-from fastapi import APIRouter, Depends, Request
+import os
+
+from fastapi import APIRouter, Depends, Request, UploadFile, File
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from app.db import get_utility_db, get_realestate_db
+from app.config import get_settings
 
 router = APIRouter(prefix="/api", tags=["Analytics"])
 
@@ -122,3 +126,34 @@ def refresh_news():
         return {"status": "error", "detail": result.stderr}
     except Exception as e:
         return {"status": "error", "detail": str(e)}
+
+
+@router.post("/feedback/transcribe")
+async def transcribe_audio(file: UploadFile = File(...)):
+    """Transcribe audio using local Whisper service. Audio stays on your infrastructure."""
+    import aiohttp
+
+    whisper_url = get_settings().whisper_url
+
+    try:
+        audio_data = await file.read()
+
+        form = aiohttp.FormData()
+        form.add_field("file", audio_data, filename="audio.webm", content_type="audio/webm")
+
+        async with aiohttp.ClientSession() as session:
+            async with session.post(whisper_url, data=form, timeout=aiohttp.ClientTimeout(total=120)) as resp:
+                if resp.status != 200:
+                    error_text = await resp.text()
+                    return JSONResponse(
+                        status_code=502,
+                        content={"error": f"Whisper error: {error_text}"}
+                    )
+                result = await resp.json()
+                return {"text": result.get("text", "").strip()}
+
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={"error": f"Transcription failed: {str(e)}"}
+        )

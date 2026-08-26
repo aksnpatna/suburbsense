@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
 export function FeedbackWidget() {
@@ -6,7 +6,66 @@ export function FeedbackWidget() {
   const [rating, setRating] = useState(0);
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState('idle'); // idle, submitting, success, error
+  const [isRecording, setIsRecording] = useState(false);
+  const [isTranscribing, setIsTranscribing] = useState(false);
+  const mediaRecorderRef = useRef(null);
+  const chunksRef = useRef([]);
   const location = useLocation();
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      chunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) chunksRef.current.push(e.data);
+      };
+
+      mediaRecorder.onstop = async () => {
+        const blob = new Blob(chunksRef.current, { type: 'audio/webm' });
+        stream.getTracks().forEach(track => track.stop());
+        await transcribeAudio(blob);
+      };
+
+      mediaRecorder.start();
+      setIsRecording(true);
+    } catch (err) {
+      console.error("Microphone access denied:", err);
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+    }
+  };
+
+  const transcribeAudio = async (blob) => {
+    setIsTranscribing(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", blob, "feedback.webm");
+
+      const resp = await fetch("/api/feedback/transcribe", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (resp.ok) {
+        const data = await resp.json();
+        if (data.text) {
+          setMessage(prev => prev ? prev + " " + data.text : data.text);
+        }
+      }
+    } catch (err) {
+      console.error("Transcription failed:", err);
+    } finally {
+      setIsTranscribing(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -123,22 +182,60 @@ export function FeedbackWidget() {
             <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
               Any thoughts or suggestions? (Anonymous)
             </label>
-            <textarea
-              value={message}
-              onChange={e => setMessage(e.target.value)}
-              placeholder="Tell us what you think..."
-              style={{
-                width: '100%',
-                padding: '0.75rem',
-                borderRadius: '8px',
-                border: '1px solid var(--border-color)',
-                background: 'var(--surface)',
-                color: 'var(--text-primary)',
-                minHeight: '80px',
-                resize: 'vertical',
-                fontFamily: 'inherit'
-              }}
-            />
+            <div style={{ position: 'relative' }}>
+              <textarea
+                value={message}
+                onChange={e => setMessage(e.target.value)}
+                placeholder="Tell us what you think..."
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  paddingRight: '3rem',
+                  borderRadius: '8px',
+                  border: '1px solid var(--border-color)',
+                  background: 'var(--surface)',
+                  color: 'var(--text-primary)',
+                  minHeight: '80px',
+                  resize: 'vertical',
+                  fontFamily: 'inherit'
+                }}
+              />
+              <button
+                type="button"
+                onMouseDown={startRecording}
+                onMouseUp={stopRecording}
+                onMouseLeave={() => isRecording && stopRecording()}
+                onTouchStart={startRecording}
+                onTouchEnd={stopRecording}
+                disabled={isTranscribing}
+                title={isRecording ? "Recording... release to stop" : isTranscribing ? "Transcribing..." : "Hold to speak"}
+                style={{
+                  position: 'absolute',
+                  right: '0.5rem',
+                  bottom: '0.5rem',
+                  width: '2rem',
+                  height: '2rem',
+                  borderRadius: '50%',
+                  border: 'none',
+                  background: isRecording ? 'var(--error-color)' : isTranscribing ? 'var(--warning-color)' : 'var(--primary-color)',
+                  color: '#fff',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '0.9rem',
+                  transition: 'background 0.2s',
+                  opacity: isTranscribing ? 0.7 : 1,
+                }}
+              >
+                {isRecording ? '⏹' : isTranscribing ? '⏳' : '🎤'}
+              </button>
+            </div>
+            {isRecording && (
+              <p style={{ fontSize: '0.75rem', color: 'var(--error-color)', margin: '0.25rem 0 0' }}>
+                🔴 Recording... release to stop
+              </p>
+            )}
           </div>
 
           {status === 'error' && (
