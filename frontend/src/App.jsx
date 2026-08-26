@@ -323,6 +323,15 @@ function HomePage() {
           
           <div className="search-box">
             <SuburbSearch onSelect={handleSuburbSelect} placeholder="Search a suburb to see key stats..." />
+            <div className="quick-links" style={{ marginTop: '1rem', display: 'flex', gap: '0.8rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: '28px' }}>Popular Regions:</span>
+              <Link to="/region/greater-sydney" style={{ padding: '0.2rem 0.8rem', background: 'var(--surface-alt)', borderRadius: '20px', textDecoration: 'none', color: 'var(--text-primary)', fontSize: '0.9rem', border: '1px solid var(--border-color)', transition: 'all 0.2s' }} onMouseOver={e => e.target.style.borderColor = 'var(--primary-color)'} onMouseOut={e => e.target.style.borderColor = 'var(--border-color)'}>Sydney</Link>
+              <Link to="/region/greater-melbourne" style={{ padding: '0.2rem 0.8rem', background: 'var(--surface-alt)', borderRadius: '20px', textDecoration: 'none', color: 'var(--text-primary)', fontSize: '0.9rem', border: '1px solid var(--border-color)', transition: 'all 0.2s' }} onMouseOver={e => e.target.style.borderColor = 'var(--primary-color)'} onMouseOut={e => e.target.style.borderColor = 'var(--border-color)'}>Melbourne</Link>
+              <Link to="/region/greater-brisbane" style={{ padding: '0.2rem 0.8rem', background: 'var(--surface-alt)', borderRadius: '20px', textDecoration: 'none', color: 'var(--text-primary)', fontSize: '0.9rem', border: '1px solid var(--border-color)', transition: 'all 0.2s' }} onMouseOver={e => e.target.style.borderColor = 'var(--primary-color)'} onMouseOut={e => e.target.style.borderColor = 'var(--border-color)'}>Brisbane</Link>
+              <Link to="/region/greater-adelaide" style={{ padding: '0.2rem 0.8rem', background: 'var(--surface-alt)', borderRadius: '20px', textDecoration: 'none', color: 'var(--text-primary)', fontSize: '0.9rem', border: '1px solid var(--border-color)', transition: 'all 0.2s' }} onMouseOver={e => e.target.style.borderColor = 'var(--primary-color)'} onMouseOut={e => e.target.style.borderColor = 'var(--border-color)'}>Adelaide</Link>
+              <Link to="/region/greater-perth" style={{ padding: '0.2rem 0.8rem', background: 'var(--surface-alt)', borderRadius: '20px', textDecoration: 'none', color: 'var(--text-primary)', fontSize: '0.9rem', border: '1px solid var(--border-color)', transition: 'all 0.2s' }} onMouseOver={e => e.target.style.borderColor = 'var(--primary-color)'} onMouseOut={e => e.target.style.borderColor = 'var(--border-color)'}>Perth</Link>
+              <Link to="/region/greater-hobart" style={{ padding: '0.2rem 0.8rem', background: 'var(--surface-alt)', borderRadius: '20px', textDecoration: 'none', color: 'var(--text-primary)', fontSize: '0.9rem', border: '1px solid var(--border-color)', transition: 'all 0.2s' }} onMouseOver={e => e.target.style.borderColor = 'var(--primary-color)'} onMouseOut={e => e.target.style.borderColor = 'var(--border-color)'}>Hobart</Link>
+            </div>
           </div>
           
           {selectedSuburb && (

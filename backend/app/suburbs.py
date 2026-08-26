@@ -479,7 +479,7 @@ def get_suburb_profile(slug: str, db: Session = Depends(get_realestate_db)):
             "transit": round(combined_transit),
             "transit_stops": round(transit_score),
             "transit_diversity": round(diversity_score),
-            "parks": round(min(100, row.parks_count)),
+            "parks": round(min(100, (row.parks_count or 0))),
             "shopping": round(min(100, len(amenities["supermarket"]) / 15 * 100)),
             "health": round(min(100, len(amenities["health"]) / 5 * 100)),
             "roads": round(road_score),
