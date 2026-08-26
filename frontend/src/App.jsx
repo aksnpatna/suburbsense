@@ -10,8 +10,8 @@ import { ThemeToggle } from './components/ThemeToggle';
 import { recordRecentVisit } from './hooks/useSuburbLibrary';
 import { AINewsSection } from './components/AINewsSection';
 import { GlobalMarketPulse } from './components/GlobalMarketPulse';
-import { PartnerEcosystem } from './components/PartnerEcosystem';
 import { TrendingTicker } from './components/TrendingTicker';
+import { PartnersPage } from './components/PartnersPage';
 
 function useScrollReveal() {
   const observerRef = useRef(null);
@@ -172,6 +172,9 @@ function App() {
                 <Link to="/suburb/compare" className={`nav-link ${location.pathname === '/suburb/compare' ? 'active' : ''}`} onClick={closeMobileMenu}>
                   Compare
                 </Link>
+                <Link to="/partners" className={`nav-link ${location.pathname === '/partners' ? 'active' : ''}`} onClick={closeMobileMenu}>
+                  For Business
+                </Link>
                 <div className={`nav-dropdown ${dropdownOpen ? 'active' : ''}`}>
                   <button className="nav-link dropdown-toggle" onClick={() => setDropdownOpen(!dropdownOpen)}>
                     Tools <span className="dropdown-arrow">▾</span>
@@ -203,6 +206,7 @@ function App() {
             <Route path="/land-tax" element={<LandTaxCalculator />} />
             <Route path="/council-rates" element={<CouncilRatesEstimator />} />
             <Route path="/suburb/compare" element={<CompareSuburbs />} />
+            <Route path="/partners" element={<PartnersPage />} />
             <Route path="/privacy" element={<LegalPage type="privacy" />} />
             <Route path="/terms" element={<LegalPage type="terms" />} />
             <Route path="/attribution" element={<LegalPage type="attribution" />} />
@@ -431,8 +435,6 @@ function HomePage() {
            </a>
         </div>
       </section>
-
-      <PartnerEcosystem />
 
       <section className="features reveal-up">
         <div className="section-header">
