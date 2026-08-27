@@ -21,5 +21,5 @@ export function useAnalytics() {
       }
     };
     trackPageView();
-  }, [location.pathname, consent]);
+  }, [location.pathname]);
 }

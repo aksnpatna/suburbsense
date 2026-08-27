@@ -20,7 +20,7 @@
   --shadow: 0 1px 2px rgba(15,23,42,.04), 0 4px 12px -2px rgba(15,23,42,.06);
   --shadow-lg: 0 24px 48px -12px rgba(15,23,42,.12);
   --radius: 14px;
-  --transition: all 0.2s ease;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --hero-gradient: linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 50%, #f5f0ff 100%);
   --card-bg: #ffffff;
   --card-border: #e2e8f0;
@@ -28,6 +28,8 @@
   --input-border: #e2e8f0;
   --sticky-nav-bg: rgba(255, 255, 255, 0.95);
   --code-bg: #1e293b;
+  --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--info-color));
+  --gradient-secondary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 [data-theme="dark"] {
@@ -890,15 +892,32 @@ h1, h2, h3, h4, .hero-title, .section-title, .calculator-card h3, .feature-card 
 
 /* Hero Section */
 .hero {
-   text-align: center;
-   padding: 4rem 0 3rem;
-   background: var(--hero-gradient);
-   transition: background 0.3s ease;
+    text-align: center;
+    padding: 4rem 0 3rem;
+    background: var(--hero-gradient);
+    transition: background 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(37, 99, 235, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+    pointer-events: none;
 }
 
 .hero-content {
   max-width: 800px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .hero-title {
@@ -906,10 +925,11 @@ h1, h2, h3, h4, .hero-title, .section-title, .calculator-card h3, .feature-card 
   font-weight: 700;
   margin-bottom: 1.5rem;
   line-height: 1.2;
-  background: linear-gradient(135deg, var(--primary-color), #1e40af);
+  background: linear-gradient(135deg, var(--primary-color), var(--info-color));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  position: relative;
 }
 
 .hero-subtitle {

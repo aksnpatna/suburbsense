@@ -13,6 +13,25 @@ import { GlobalMarketPulse } from './components/GlobalMarketPulse';
 import { TrendingTicker } from './components/TrendingTicker';
 import { PartnersPage } from './components/PartnersPage';
 import { RegionHub } from './pages/RegionHub';
+import { LegalPage } from './pages/LegalPage';
+import { ComparePage } from './pages/ComparePage';
+import { StampDutyCalculator } from './pages/StampDutyCalculator';
+import { AffordabilityCalculator } from './pages/AffordabilityCalculator';
+import { ROICalculator } from './pages/ROICalculator';
+import { EnergyCompare } from './pages/EnergyCompare';
+import { NBNLookup } from './pages/NBNLookup';
+import { FHBAChecker } from './pages/FHBAChecker';
+import { LandTaxCalculator } from './pages/LandTaxCalculator';
+import { CouncilRatesEstimator } from './pages/CouncilRatesEstimator';
+import { CalculatorsHub } from './pages/CalculatorsHub';
+import { CompareSuburbs } from './pages/CompareSuburbs';
+import { StateHub } from './pages/StateHub';
+import { AnalyticsDashboard } from './pages/AnalyticsDashboard';
+import { FeedbackWidget } from './components/FeedbackWidget';
+import { GuidePage } from './pages/GuidePage';
+import { useAnalytics } from './hooks/useAnalytics';
+
+const AmenityMap = React.lazy(() => import('./components/AmenityMap').then(m => ({ default: m.AmenityMap })));
 
 function useScrollReveal() {
   const observerRef = useRef(null);
@@ -81,24 +100,6 @@ function useScrollRevealLazy(locationPath) {
     };
   }, [locationPath]);
 }
-const AmenityMap = React.lazy(() => import('./components/AmenityMap').then(m => ({ default: m.AmenityMap })));
-import { LegalPage } from './pages/LegalPage';
-import { ComparePage } from './pages/ComparePage';
-import { StampDutyCalculator } from './pages/StampDutyCalculator';
-import { AffordabilityCalculator } from './pages/AffordabilityCalculator';
-import { ROICalculator } from './pages/ROICalculator';
-import { EnergyCompare } from './pages/EnergyCompare';
-import { NBNLookup } from './pages/NBNLookup';
-import { FHBAChecker } from './pages/FHBAChecker';
-import { LandTaxCalculator } from './pages/LandTaxCalculator';
-import { CouncilRatesEstimator } from './pages/CouncilRatesEstimator';
-import { CalculatorsHub } from './pages/CalculatorsHub';
-import { CompareSuburbs } from './pages/CompareSuburbs';
-import { StateHub } from './pages/StateHub';
-import { AnalyticsDashboard } from './pages/AnalyticsDashboard';
-import { FeedbackWidget } from './components/FeedbackWidget';
-import { GuidePage } from './pages/GuidePage';
-import { useAnalytics } from './hooks/useAnalytics';
 
 function App() {
   const location = useLocation();
@@ -220,7 +221,7 @@ function App() {
 
         <FeedbackWidget />
 
-        <footer className="footer" style={{ background: 'var(--surface)', borderTop: '1px solid var(--border-color)', color: 'var(--text-secondary)' }}>
+         <footer className="footer" style={{ background: 'var(--surface)', borderTop: '1px solid var(--border-color)', color: 'var(--text-secondary)' }}>
           <div className="container">
             <div className="footer-grid">
               <div className="footer-col">
@@ -232,6 +233,29 @@ function App() {
                 </p>
                 <div className="cimet-badge" style={{ marginBottom: '1rem' }}>
                   <span>⚡ Compare Energy</span>
+                </div>
+                <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>
+                  <a href="https://twitter.com/suburbsense" target="_blank" rel="noopener noreferrer" style={{ 
+                    color: 'var(--text-secondary)', 
+                    fontSize: '1.2rem',
+                    transition: 'color 0.2s ease'
+                  }} onMouseOver={e => e.currentTarget.style.color = 'var(--primary-color)'}>
+                    🐦
+                  </a>
+                  <a href="https://facebook.com/suburbsense" target="_blank" rel="noopener noreferrer" style={{ 
+                    color: 'var(--text-secondary)', 
+                    fontSize: '1.2rem',
+                    transition: 'color 0.2s ease'
+                  }} onMouseOver={e => e.currentTarget.style.color = 'var(--primary-color)'}>
+                    📘
+                  </a>
+                  <a href="https://linkedin.com/company/suburbsense" target="_blank" rel="noopener noreferrer" style={{ 
+                    color: 'var(--text-secondary)', 
+                    fontSize: '1.2rem',
+                    transition: 'color 0.2s ease'
+                  }} onMouseOver={e => e.currentTarget.style.color = 'var(--primary-color)'}>
+                    💼
+                  </a>
                 </div>
               </div>
               <div className="footer-col">
@@ -287,29 +311,83 @@ function HomePage() {
       <TrendingTicker />
       <div className="container">
         <Helmet>
-          <title>SuburbSense — Find the Best Suburbs in Australia | Free Property Data</title>
+          <title>SuburbSense — Find the Best Suburbs in Australia | Free Property Data & Insights</title>
           <meta name="description" content="Research any Australian suburb with real ABS census data, ACARA school ratings, transit scores, crime stats and cost-of-living tools. Free, no login required." />
+          <meta name="keywords" content="Australian suburbs, property data, suburb research, school ratings, transit scores, ABS census, cost of living, property investment" />
+          <meta name="author" content="SuburbSense" />
+          <meta name="robots" content="index, follow" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <link rel="canonical" href="https://suburbsense.com.au" />
           <meta property="og:title" content="SuburbSense — Find the Best Suburbs in Australia" />
           <meta property="og:description" content="Real ABS census data, school ratings, transit scores — all free, no login." />
           <meta property="og:type" content="website" />
           <meta property="og:url" content="https://suburbsense.com.au" />
+          <meta property="og:site_name" content="SuburbSense" />
+          <meta property="og:locale" content="en_AU" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content="SuburbSense — Find the Best Suburbs in Australia" />
+          <meta name="twitter:description" content="Real ABS census data, school ratings, transit scores — all free, no login." />
         </Helmet>
+        
+        {/* Schema Markup */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "SuburbSense",
+            "url": "https://suburbsense.com.au",
+            "description": "Australian suburb intelligence. Data-driven insights to help you find the perfect place to live, invest, or rent.",
+            "publisher": {
+              "@type": "Organization",
+              "name": "SuburbSense",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://suburbsense.com.au/logo.png"
+              }
+            },
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://suburbsense.com.au/suburb/{search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          })}
+        </script>
+        
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "SuburbSense",
+            "url": "https://suburbsense.com.au",
+            "logo": "https://suburbsense.com.au/logo.png",
+            "description": "Australian suburb intelligence platform providing data-driven insights for property research",
+            "sameAs": [
+              "https://twitter.com/suburbsense",
+              "https://facebook.com/suburbsense",
+              "https://linkedin.com/company/suburbsense"
+            ],
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "email": "contact@suburbsense.com.au",
+              "contactType": "customer service"
+            }
+          })}
+        </script>
 
         <section className="hero">
         <div className="hero-content">
           <div className="hero-badge">🏆 Free Australian Suburb Intelligence</div>
           <h1 className="hero-title">
-            Find the best suburbs to <span style={{ background: 'linear-gradient(135deg, var(--primary-color), var(--info-color))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>live, invest &amp; grow</span>
+            Find Your Perfect Australian Suburb to <span style={{ background: 'linear-gradient(135deg, var(--primary-color), var(--info-color))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Live, Invest & Thrive</span>
           </h1>
           <p className="hero-subtitle">
-            Real ABS census data, ACARA school ratings, transit scores &amp; cost-of-living tools — <strong>all free, no login</strong>
+            Uncover data-driven insights with real ABS census data, ACARA school ratings, transit scores & cost-of-living tools — <strong>all free, no login required</strong>
           </p>
           
-          <div className="hero-metrics">
+           <div className="hero-metrics">
             <div className="hero-metric">
               <span className="metric-number">11,599</span>
-              <span className="metric-label">Suburbs</span>
+              <span className="metric-label">Australian Suburbs</span>
             </div>
             <div className="hero-metric">
               <span className="metric-number">30+</span>
@@ -317,15 +395,15 @@ function HomePage() {
             </div>
             <div className="hero-metric">
               <span className="metric-number">100%</span>
-              <span className="metric-label">Browser-Based</span>
+              <span className="metric-label">Free & No Login</span>
             </div>
           </div>
           
-          <div className="search-box">
+           <div className="search-box">
             <SuburbSearch onSelect={handleSuburbSelect} placeholder="Search a suburb, region or postcode..." />
             <p style={{ color: 'var(--text-tertiary)', fontSize: '0.82rem', marginTop: '0.5rem', marginBottom: '0.75rem' }}>Powered by ABS Census 2021 · ACARA Schools · OpenStreetMap · AER Energy Data</p>
             <div style={{ marginTop: '0.5rem' }}>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>🗺️ Browse Popular Regions</p>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>🗺️ Explore Popular Regions</p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: '0.6rem' }}>
                 {[
                   { name: 'Sydney', slug: 'greater-sydney', emoji: '🌉', sub: 'NSW' },
@@ -345,10 +423,20 @@ function HomePage() {
                     color: 'var(--text-primary)',
                     fontSize: '0.85rem',
                     fontWeight: 600,
-                    transition: 'border-color 0.15s, transform 0.15s',
+                    transition: 'all 0.2s ease',
+                    position: 'relative',
+                    overflow: 'hidden'
                   }}
-                  onMouseOver={e => { e.currentTarget.style.borderColor = 'var(--primary-color)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
-                  onMouseOut={e => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.transform = 'none'; }}
+                  onMouseOver={e => { 
+                    e.currentTarget.style.borderColor = 'var(--primary-color)'; 
+                    e.currentTarget.style.transform = 'translateY(-1px)';
+                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(37, 99, 235, 0.15)';
+                  }}
+                  onMouseOut={e => { 
+                    e.currentTarget.style.borderColor = 'var(--border-color)'; 
+                    e.currentTarget.style.transform = 'none';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
                   >
                     <span style={{ fontSize: '1.3rem' }}>{r.emoji}</span>
                     <span>{r.name} <span style={{ color: 'var(--text-secondary)', fontWeight: 400 }}>{r.sub}</span></span>
@@ -449,105 +537,105 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="calculators-hub">
-        <div className="section-header">
-          <h2>Decision Tools</h2>
-          <p>Know the true cost before you commit. For renters comparing suburbs, first home buyers checking eligibility, and investors analysing returns.</p>
-        </div>
-        <div className="calculator-grid">
+       <section className="calculators-hub">
+         <div className="section-header">
+           <h2>Powerful Decision Tools</h2>
+           <p>Make informed decisions with our comprehensive suite of property calculators. For renters comparing suburbs, first home buyers checking eligibility, and investors analyzing returns.</p>
+         </div>
+         <div className="calculator-grid">
           <a href="/calculators/affordability" className="calculator-card featured reveal-stagger">
             <div className="calculator-icon">💰</div>
             <div className="calculator-info">
               <h3>Can I Afford This Suburb?</h3>
-              <p>Given your income and deposit — what's the max you can borrow? What will it actually cost each month?</p>
+              <p>Given your income and deposit — what's the maximum you can borrow? What will it actually cost each month?</p>
             </div>
           </a>
            <a href="/calculators/stamp-duty" className="calculator-card featured reveal-stagger">
-             <div className="calculator-icon">🏠</div>
-             <div className="calculator-info">
-               <h3>True Upfront Cost</h3>
-               <p>Stamp duty + transfer fees + mortgage registration + LMI. All government costs in one result.</p>
-             </div>
-           </a>
-           <a href="/calculators/roi" className="calculator-card featured reveal-stagger">
-             <div className="calculator-icon">📈</div>
-             <div className="calculator-info">
-               <h3>Is It a Good Investment?</h3>
-               <p>Net yield, cash-on-cash return, weekly cashflow. After ALL costs — rates, strata, land tax, maintenance.</p>
-             </div>
-           </a>
-           <a href="/fhbg" className="calculator-card reveal-stagger">
-             <div className="calculator-icon">🏡</div>
-             <div className="calculator-info">
-               <h3>First Home Guarantee Eligibility</h3>
-               <p>Can you use the 5% deposit scheme? No LMI, no income cap, unlimited places.</p>
-             </div>
-           </a>
-           <a href="/land-tax" className="calculator-card reveal-stagger">
-             <div className="calculator-icon">📋</div>
-             <div className="calculator-info">
-               <h3>Annual Land Tax</h3>
-               <p>Estimate land tax for investment properties. Includes foreign owner surcharge.</p>
-             </div>
-           </a>
-           <a href="/council-rates" className="calculator-card reveal-stagger">
-             <div className="calculator-icon">🏛️</div>
-             <div className="calculator-info">
-               <h3>Council Rates</h3>
-               <p>Estimate annual council rates for any property. Varies significantly by council area.</p>
-             </div>
-           </a>
-           <a href="/energy/compare" className="calculator-card reveal-stagger" style={{ opacity: '0.9' }}>
-             <div className="calculator-icon">⚡</div>
-             <div className="calculator-info">
-               <h3>Compare Your Energy <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--warning-color)', background: 'rgba(245, 158, 11, 0.1)', padding: '0.1rem 0.4rem', borderRadius: '4px' }}>Coming Soon</span></h3>
-               <p>Moving? Join the waitlist for our upcoming electricity and gas comparison tool.</p>
-             </div>
-           </a>
-           <a href="/nbn" className="calculator-card reveal-stagger">
-             <div className="calculator-icon">📶</div>
-             <div className="calculator-info">
-               <h3>NBN Technology Check</h3>
-               <p>FTTP, HFC, FTTN? Check what's available at any address before you buy.</p>
-             </div>
-           </a>
-        </div>
+              <div className="calculator-icon">🏠</div>
+              <div className="calculator-info">
+                <h3>True Upfront Cost</h3>
+                <p>Stamp duty + transfer fees + mortgage registration + LMI. All government costs in one result.</p>
+              </div>
+            </a>
+            <a href="/calculators/roi" className="calculator-card featured reveal-stagger">
+              <div className="calculator-icon">📈</div>
+              <div className="calculator-info">
+                <h3>Is It a Good Investment?</h3>
+                <p>Net yield, cash-on-cash return, weekly cashflow. After ALL costs — rates, strata, land tax, maintenance.</p>
+              </div>
+            </a>
+            <a href="/fhbg" className="calculator-card reveal-stagger">
+              <div className="calculator-icon">🏡</div>
+              <div className="calculator-info">
+                <h3>First Home Guarantee Eligibility</h3>
+                <p>Can you use the 5% deposit scheme? No LMI, no income cap, unlimited places.</p>
+              </div>
+            </a>
+            <a href="/land-tax" className="calculator-card reveal-stagger">
+              <div className="calculator-icon">📋</div>
+              <div className="calculator-info">
+                <h3>Annual Land Tax</h3>
+                <p>Estimate land tax for investment properties. Includes foreign owner surcharge.</p>
+              </div>
+            </a>
+            <a href="/council-rates" className="calculator-card reveal-stagger">
+              <div className="calculator-icon">🏛️</div>
+              <div className="calculator-info">
+                <h3>Council Rates</h3>
+                <p>Estimate annual council rates for any property. Varies significantly by council area.</p>
+              </div>
+            </a>
+            <a href="/energy/compare" className="calculator-card reveal-stagger" style={{ opacity: '0.9' }}>
+              <div className="calculator-icon">⚡</div>
+              <div className="calculator-info">
+                <h3>Compare Your Energy <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--warning-color)', background: 'rgba(245, 158, 11, 0.1)', padding: '0.1rem 0.4rem', borderRadius: '4px' }}>Coming Soon</span></h3>
+                <p>Moving? Join the waitlist for our upcoming electricity and gas comparison tool.</p>
+              </div>
+            </a>
+            <a href="/nbn" className="calculator-card reveal-stagger">
+              <div className="calculator-icon">📶</div>
+              <div className="calculator-info">
+                <h3>NBN Technology Check</h3>
+                <p>FTTP, HFC, FTTN? Check what's available at any address before you buy.</p>
+              </div>
+            </a>
+         </div>
       </section>
 
-      <section className="features">
-        <div className="section-header">
-          <h2>Suburb Profiles</h2>
-          <p>School catchments, transit access, and census demographics — for when you're comparing suburbs.</p>
-        </div>
-        <div className="feature-grid">
-          <div className="feature-card reveal-stagger">
-            <div className="feature-icon">🏫</div>
-            <h3>Which school zone am I in?</h3>
-            <p>Official government school intake zones. Primary and secondary catchments for every suburb.</p>
+       <section className="features">
+         <div className="section-header">
+           <h2>Comprehensive Suburb Profiles</h2>
+           <p>Detailed suburb profiles with school catchments, transit access, and ABS census demographics — everything you need when comparing suburbs.</p>
+         </div>
+         <div className="feature-grid">
+            <div className="feature-card reveal-stagger">
+              <div className="feature-icon">🏫</div>
+              <h3>Which School Zone Am I In?</h3>
+              <p>Official government school intake zones. Primary and secondary catchments for every suburb with ACARA school ratings.</p>
+            </div>
+            <div className="feature-card reveal-stagger">
+              <div className="feature-icon">🚌</div>
+              <h3>How Long Will My Commute Actually Be?</h3>
+              <p>Real GTFS data from PTV, TfNSW, TransLink, Adelaide Metro, Transperth. Stop density scored 0-100.</p>
+            </div>
+            <div className="feature-card reveal-stagger">
+              <div className="feature-icon">🌳</div>
+              <h3>What's the Liveability Like?</h3>
+              <p>Parks coverage, nearest hospital, supermarket access, amenities count — all in one place.</p>
+            </div>
+            <div className="feature-card reveal-stagger">
+              <div className="feature-icon">📊</div>
+              <h3>Who Lives Here? (ABS Census)</h3>
+              <p>ABS Census 2021 — population, median income, median age, owner-occupancy, and more.</p>
+            </div>
           </div>
-          <div className="feature-card reveal-stagger">
-            <div className="feature-icon">🚌</div>
-            <h3>How long will my commute actually be?</h3>
-            <p>Real GTFS data from PTV, TfNSW, TransLink, Adelaide Metro, Transperth. Stop density scored 0-100.</p>
-          </div>
-          <div className="feature-card reveal-stagger">
-            <div className="feature-icon">🌳</div>
-            <h3>What's the liveability like?</h3>
-            <p>Parks coverage, nearest hospital, supermarket access, amenities count.</p>
-          </div>
-          <div className="feature-card reveal-stagger">
-            <div className="feature-icon">📊</div>
-            <h3>Who lives here? (ABS Census)</h3>
-            <p>ABS Census 2021 — population, median income, median age, owner-occupancy.</p>
-          </div>
-        </div>
       </section>
 
-      <section className="calculators-hub reveal-up" style={{ background: 'transparent', border: 'none', padding: '2rem 0' }}>
-        <div className="section-header">
-          <h2>Moving? Sort Your Utilities</h2>
-          <p>Free comparison. No lock-in. No obligation.</p>
-        </div>
+       <section className="calculators-hub reveal-up" style={{ background: 'transparent', border: 'none', padding: '2rem 0' }}>
+         <div className="section-header">
+           <h2>Moving? Compare Your Utilities</h2>
+           <p>Free comparison tool for electricity, gas, and internet. No lock-in. No obligation. Save on your utilities today.</p>
+         </div>
         <div className="calculator-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))' }}>
           <a href="/energy/compare" className="calculator-card reveal-stagger" style={{ opacity: '0.9' }}>
             <div className="calculator-icon">⚡</div>
