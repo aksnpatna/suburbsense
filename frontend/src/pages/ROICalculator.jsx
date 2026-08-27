@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useSearchParams } from 'react-router-dom';
 
 const STATES = ['VIC', 'NSW', 'QLD', 'WA', 'SA', 'TAS', 'ACT', 'NT'];
 
 export function ROICalculator() {
-  const [purchasePrice, setPurchasePrice] = useState(600000);
-  const [weeklyRent, setWeeklyRent] = useState(550);
-  const [state, setState] = useState('VIC');
+  const [searchParams] = useSearchParams();
+  const [purchasePrice, setPurchasePrice] = useState(Number(searchParams.get('price')) || 600000);
+  const [weeklyRent, setWeeklyRent] = useState(Number(searchParams.get('rent')) || 550);
+  const [state, setState] = useState(searchParams.get('state') || 'VIC');
   const [depositPct, setDepositPct] = useState(20);
   const [interestRate, setInterestRate] = useState(6.2);
   const [strata, setStrata] = useState(0);
@@ -19,6 +21,12 @@ export function ROICalculator() {
   const [salary, setSalary] = useState(100000);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get('price')) {
+      handleCalculate();
+    }
+  }, []);
 
   const handleCalculate = async () => {
     setLoading(true);

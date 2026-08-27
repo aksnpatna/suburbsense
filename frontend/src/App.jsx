@@ -7,6 +7,7 @@ import { ScoreChips } from './components/ScoreChips';
 import { SaveSuburbButton, SuburbAlertSignup, SuburbShareBar } from './components/SaveSuburb';
 import { SuburbLibraryRails } from './components/SuburbLibraryRails';
 import { ThemeToggle } from './components/ThemeToggle';
+import { ROISnapshot } from './components/ROISnapshot';
 import { recordRecentVisit } from './hooks/useSuburbLibrary';
 import { AINewsSection } from './components/AINewsSection';
 import { GlobalMarketPulse } from './components/GlobalMarketPulse';
@@ -1140,6 +1141,8 @@ function SuburbProfile() {
             </div>
           </section>
         )}
+
+        <ROISnapshot state={data.state} />
 
         <section id="scores" className="score-section">
           <h2 className="section-title">Detailed Scores</h2>
