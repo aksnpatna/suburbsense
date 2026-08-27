@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-export function useAnalytics(consent = false) {
+export function useAnalytics() {
   const location = useLocation();
 
   useEffect(() => {
-    if (!consent) return;
 
     const trackPageView = async () => {
       try {

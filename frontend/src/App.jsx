@@ -99,12 +99,10 @@ import { AnalyticsDashboard } from './pages/AnalyticsDashboard';
 import { FeedbackWidget } from './components/FeedbackWidget';
 import { GuidePage } from './pages/GuidePage';
 import { useAnalytics } from './hooks/useAnalytics';
-import { CookieBanner, useAnalyticsConsent } from './components/CookieBanner';
 
 function App() {
   const location = useLocation();
-  const { consent, showBanner, accept, decline } = useAnalyticsConsent();
-  useAnalytics(consent);
+  useAnalytics();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [subscribeEmail, setSubscribeEmail] = useState('');
@@ -222,8 +220,6 @@ function App() {
 
         <FeedbackWidget />
 
-        <CookieBanner onAccept={accept} onDecline={decline} visible={showBanner} />
-
         <footer className="footer" style={{ background: 'var(--surface)', borderTop: '1px solid var(--border-color)', color: 'var(--text-secondary)' }}>
           <div className="container">
             <div className="footer-grid">
@@ -291,9 +287,13 @@ function HomePage() {
       <TrendingTicker />
       <div className="container">
         <Helmet>
-          <title>SuburbSense — Australian Suburb Intelligence</title>
+          <title>SuburbSense — Find the Best Suburbs in Australia | Free Property Data</title>
           <meta name="description" content="Research any Australian suburb with real ABS census data, ACARA school ratings, transit scores, crime stats and cost-of-living tools. Free, no login required." />
           <link rel="canonical" href="https://suburbsense.com.au" />
+          <meta property="og:title" content="SuburbSense — Find the Best Suburbs in Australia" />
+          <meta property="og:description" content="Real ABS census data, school ratings, transit scores — all free, no login." />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content="https://suburbsense.com.au" />
         </Helmet>
 
         <section className="hero">
@@ -383,17 +383,31 @@ function HomePage() {
       {/* How It Works */}
       <section style={{ padding: '3.5rem 0 3rem', background: 'var(--surface-color)', borderBottom: '1px solid var(--border-color)' }}>
         <div className="container">
-          <p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1.5rem' }}>How it works</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', maxWidth: '800px', margin: '0 auto' }}>
+          <p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.5rem' }}>How it works</p>
+          <h2 style={{ textAlign: 'center', marginTop: 0, marginBottom: '2.5rem', fontSize: '1.5rem' }}>Find your perfect suburb in 3 steps</h2>
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'center', gap: '0', maxWidth: '900px', margin: '0 auto', flexWrap: 'wrap' }}>
             {[
-              { step: '1', icon: '🔍', title: 'Search any suburb', desc: 'Type a suburb, region or postcode' },
-              { step: '2', icon: '📊', title: 'See real data', desc: 'Demographics, schools, safety, transit' },
-              { step: '3', icon: '💡', title: 'Compare & decide', desc: 'Use our free calculators to plan your move' },
-            ].map(s => (
-              <div key={s.step} style={{ textAlign: 'center', padding: '1.5rem 1rem' }}>
-                <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{s.icon}</div>
-                <div style={{ fontWeight: 700, marginBottom: '0.3rem', color: 'var(--text-primary)' }}>{s.title}</div>
-                <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{s.desc}</div>
+              { step: '1', icon: '🔍', title: 'Search any suburb', desc: 'Type a suburb, region or postcode into the search bar above' },
+              { step: '2', icon: '📊', title: 'See real data', desc: 'Demographics, schools, safety, transit scores and more' },
+              { step: '3', icon: '💡', title: 'Compare & decide', desc: 'Use our free calculators to plan your move or investment' },
+            ].map((s, i) => (
+              <div key={s.step} style={{ display: 'flex', alignItems: 'flex-start', flex: '1 1 200px', maxWidth: '280px' }}>
+                <div style={{ textAlign: 'center', padding: '1rem', position: 'relative', flex: 1 }}>
+                  <div style={{
+                    width: '64px', height: '64px', borderRadius: '50%',
+                    background: 'linear-gradient(135deg, var(--primary-color), var(--info-color))',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    margin: '0 auto 1rem', fontSize: '1.5rem',
+                    boxShadow: '0 4px 12px rgba(37, 99, 235, 0.25)',
+                  }}>{s.icon}</div>
+                  <div style={{
+                    position: 'absolute', top: '32px', right: '-50%', width: '100%', height: '2px',
+                    background: 'linear-gradient(90deg, var(--primary-color), var(--border-color))',
+                    zIndex: 0, display: i < 2 ? 'block' : 'none',
+                  }} />
+                  <div style={{ fontWeight: 700, marginBottom: '0.3rem', color: 'var(--text-primary)', position: 'relative', zIndex: 1 }}>{s.title}</div>
+                  <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', position: 'relative', zIndex: 1 }}>{s.desc}</div>
+                </div>
               </div>
             ))}
           </div>
