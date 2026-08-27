@@ -326,7 +326,7 @@ function HomePage() {
             <p style={{ color: 'var(--text-tertiary)', fontSize: '0.82rem', marginTop: '0.5rem', marginBottom: '0.75rem' }}>Powered by ABS Census 2021 · ACARA Schools · OpenStreetMap · AER Energy Data</p>
             <div style={{ marginTop: '0.5rem' }}>
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>🗺️ Browse Popular Regions</p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.6rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: '0.6rem' }}>
                 {[
                   { name: 'Sydney', slug: 'greater-sydney', emoji: '🌉', sub: 'NSW' },
                   { name: 'Melbourne', slug: 'greater-melbourne', emoji: '🏙️', sub: 'VIC' },
