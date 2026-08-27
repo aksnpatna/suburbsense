@@ -4,7 +4,7 @@ import { Routes, Route, Link, useLocation, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { SuburbSearch } from './components/SuburbSearch';
 import { ScoreChips } from './components/ScoreChips';
-import { SaveSuburbButton, SuburbAlertSignup } from './components/SaveSuburb';
+import { SaveSuburbButton, SuburbAlertSignup, SuburbShareBar } from './components/SaveSuburb';
 import { SuburbLibraryRails } from './components/SuburbLibraryRails';
 import { ThemeToggle } from './components/ThemeToggle';
 import { recordRecentVisit } from './hooks/useSuburbLibrary';
@@ -29,6 +29,7 @@ import { StateHub } from './pages/StateHub';
 import { AnalyticsDashboard } from './pages/AnalyticsDashboard';
 import { FeedbackWidget } from './components/FeedbackWidget';
 import { GuidePage } from './pages/GuidePage';
+import { RankingsHub } from './pages/RankingsHub';
 import { useAnalytics } from './hooks/useAnalytics';
 
 const AmenityMap = React.lazy(() => import('./components/AmenityMap').then(m => ({ default: m.AmenityMap })));
@@ -180,6 +181,7 @@ function App() {
                     Tools <span className="dropdown-arrow">▾</span>
                   </button>
                   <div className="nav-dropdown-menu" onClick={() => setDropdownOpen(false)}>
+                    <Link to="/rankings" onClick={closeMobileMenu}>🏆 Suburb Rankings</Link>
                     <Link to="/nbn" onClick={closeMobileMenu}>NBN Check</Link>
                     <Link to="/land-tax" onClick={closeMobileMenu}>Land Tax Calculator</Link>
                     <Link to="/council-rates" onClick={closeMobileMenu}>Council Rates</Link>
@@ -215,6 +217,7 @@ function App() {
             
             {/* SEO Programmatic Guides */}
             <Route path="/guides/:state/:category" element={<GuidePage />} />
+            <Route path="/rankings" element={<RankingsHub />} />
             <Route path="/analytics" element={<AnalyticsDashboard />} />
           </Routes>
         </main>
@@ -534,6 +537,7 @@ function HomePage() {
           <a href="/state/vic" className="btn btn-secondary" style={{ margin: '0 0.5rem' }}>Explore VIC</a>
           <a href="/state/nsw" className="btn btn-secondary" style={{ margin: '0 0.5rem' }}>Explore NSW</a>
           <a href="/state/qld" className="btn btn-secondary" style={{ margin: '0 0.5rem' }}>Explore QLD</a>
+          <a href="/rankings" className="btn btn-primary" style={{ margin: '0 0.5rem' }}>🏆 All Rankings</a>
         </div>
       </section>
 
@@ -890,6 +894,8 @@ function SuburbProfile() {
             </div>
             
             <p className="hero-subtitle">{suburbSummary}</p>
+
+            <SuburbShareBar suburb={{ slug: data.slug, name: data.name, state: data.state, postcode: data.postcode }} score={compositeScore} />
             
             <div className="hero-badges" role="list" aria-label="Key statistics">
               {data.demographics?.population_2021 && (
