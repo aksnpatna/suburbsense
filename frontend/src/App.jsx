@@ -181,6 +181,7 @@ function App() {
                     Tools <span className="dropdown-arrow">▾</span>
                   </button>
                   <div className="nav-dropdown-menu" onClick={() => setDropdownOpen(false)}>
+                    <Link to="/suburb/compare" onClick={closeMobileMenu}>⚖️ Compare Suburbs</Link>
                     <Link to="/rankings" onClick={closeMobileMenu}>🏆 Suburb Rankings</Link>
                     <Link to="/nbn" onClick={closeMobileMenu}>NBN Check</Link>
                     <Link to="/land-tax" onClick={closeMobileMenu}>Land Tax Calculator</Link>
@@ -889,6 +890,9 @@ function SuburbProfile() {
                 <SaveSuburbButton
                   suburb={{ slug: data.slug, name: data.name, state: data.state, postcode: data.postcode, score: compositeScore }}
                 />
+                <Link to={`/suburb/compare?s1=${data.slug}`} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  ⚖️ Compare
+                </Link>
                 <SuburbAlertSignup suburb={{ slug: data.slug, name: data.name, state: data.state }} />
               </div>
             </div>
