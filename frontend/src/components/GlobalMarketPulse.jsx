@@ -32,9 +32,9 @@ export function GlobalMarketPulse() {
 
   const getSentimentStyle = (label) => {
     const l = (label || '').toLowerCase();
-    if (l.includes('positive') || l.includes('bullish')) return { bg: '#dcfce7', text: '#166534', dot: '#22c55e' };
-    if (l.includes('negative') || l.includes('bearish')) return { bg: '#fee2e2', text: '#991b1b', dot: '#ef4444' };
-    return { bg: '#f1f5f9', text: '#475569', dot: '#64748b' };
+    if (l.includes('positive') || l.includes('bullish')) return { bg: 'var(--success-bg, #dcfce7)', text: 'var(--success-color)', dot: '#22c55e' };
+    if (l.includes('negative') || l.includes('bearish')) return { bg: 'var(--error-bg, #fee2e2)', text: 'var(--error-color)', dot: '#ef4444' };
+    return { bg: 'var(--surface-alt)', text: 'var(--text-secondary)', dot: '#64748b' };
   };
 
   return (

@@ -999,7 +999,7 @@ function SuburbProfile() {
               <span className="quick-fact-icon">📈</span>
               <div className="quick-fact-info">
                 <span className="quick-fact-value">{data.demographics.population_cagr > 0 ? '+' : ''}{data.demographics.population_cagr.toFixed(1)}%</span>
-                <span className="quick-fact-label">Annual Growth</span>
+                <span className="quick-fact-label">Population Growth</span>
               </div>
             </div>
           )}
