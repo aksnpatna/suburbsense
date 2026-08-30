@@ -146,7 +146,7 @@ export function SaveSuburbButton({ suburb }) {
  */
 export function SuburbShareBar({ suburb, score }) {
   const [copied, setCopied] = useState(false);
-  const url = `https://suburbsense.com.au/suburb/${suburb.slug}`;
+  const url = `https://suburbsense.com/suburb/${suburb.slug}`;
   const text = `I'm researching ${suburb.name} ${suburb.state} ${suburb.postcode} — Overall score ${score}/100. Check it out on SuburbSense 🏘️`;
 
   const handleNativeShare = async () => {

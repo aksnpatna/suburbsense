@@ -73,7 +73,8 @@ const legalContent = {
 
       <h3>Our Partners</h3>
       <ul>
-        <li><strong>CIMET Sales Pty Ltd:</strong> We partner with CIMET to provide energy and internet comparison services. When you switch a utility through the comparison widget, SuburbSense receives a commission.</li>
+        <li><strong>Commission Factory:</strong> We partner with brands via Commission Factory (e.g., Energy providers, Broadband providers, Removalists).</li>
+        <li><strong>CIMET Sales Pty Ltd:</strong> We partner with CIMET to provide detailed energy and internet comparison services.</li>
       </ul>
 
       <h3>Data Independence</h3>

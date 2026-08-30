@@ -8,6 +8,10 @@ import { SaveSuburbButton, SuburbAlertSignup, SuburbShareBar } from './component
 import { SuburbLibraryRails } from './components/SuburbLibraryRails';
 import { ThemeToggle } from './components/ThemeToggle';
 import { ROISnapshot } from './components/ROISnapshot';
+import { AFFILIATE_CONFIG } from './config/affiliates';
+import { TopPicksCard } from './components/TopPicksCard';
+import { MortgageCTA } from './components/MortgageCTA';
+import { MovingBanner } from './components/MovingBanner';
 import { recordRecentVisit } from './hooks/useSuburbLibrary';
 import { AINewsSection } from './components/AINewsSection';
 import { GlobalMarketPulse } from './components/GlobalMarketPulse';
@@ -31,9 +35,30 @@ import { AnalyticsDashboard } from './pages/AnalyticsDashboard';
 import { FeedbackWidget } from './components/FeedbackWidget';
 import { GuidePage } from './pages/GuidePage';
 import { RankingsHub } from './pages/RankingsHub';
+import { ComingSoon } from './pages/ComingSoon';
+import { DataMethodology } from './pages/DataMethodology';
 import { useAnalytics } from './hooks/useAnalytics';
 
 const AmenityMap = React.lazy(() => import('./components/AmenityMap').then(m => ({ default: m.AmenityMap })));
+
+const Sparkline = ({ data, color, width = 60, height = 20 }) => {
+  if (!data || data.length === 0) return null;
+  const max = Math.max(...data);
+  const min = Math.min(...data);
+  const range = max - min || 1;
+  const dx = width / (data.length - 1 || 1);
+  const points = data.map((d, i) => {
+    const x = i * dx;
+    const y = height - ((d - min) / range) * height;
+    return `${x},${y}`;
+  }).join(' ');
+
+  return (
+    <svg width={width} height={height} viewBox={`0 -2 ${width} ${height + 4}`} style={{ overflow: 'visible' }}>
+      <polyline fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" points={points} />
+    </svg>
+  );
+};
 
 function useScrollReveal() {
   const observerRef = useRef(null);
@@ -221,6 +246,8 @@ function App() {
             <Route path="/guides/:state/:category" element={<GuidePage />} />
             <Route path="/rankings" element={<RankingsHub />} />
             <Route path="/analytics" element={<AnalyticsDashboard />} />
+            <Route path="/methodology" element={<DataMethodology />} />
+            <Route path="/coming-soon" element={<ComingSoon />} />
           </Routes>
         </main>
 
@@ -269,6 +296,7 @@ function App() {
                   <li><Link to="/" onClick={() => window.scrollTo(0,0)}>Suburb Search</Link></li>
                   <li><Link to="/compare" onClick={() => window.scrollTo(0,0)}>Compare Suburbs</Link></li>
                   <li><Link to="/calculators" onClick={() => window.scrollTo(0,0)}>Calculators</Link></li>
+                  <li><Link to="/methodology" onClick={() => window.scrollTo(0,0)}>Data Methodology</Link></li>
                 </ul>
               </div>
               <div className="footer-col">
@@ -322,11 +350,11 @@ function HomePage() {
           <meta name="author" content="SuburbSense" />
           <meta name="robots" content="index, follow" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <link rel="canonical" href="https://suburbsense.com.au" />
+          <link rel="canonical" href="https://suburbsense.com" />
           <meta property="og:title" content="SuburbSense — Find the Best Suburbs in Australia" />
           <meta property="og:description" content="Real ABS census data, school ratings, transit scores — all free, no login." />
           <meta property="og:type" content="website" />
-          <meta property="og:url" content="https://suburbsense.com.au" />
+          <meta property="og:url" content="https://suburbsense.com" />
           <meta property="og:site_name" content="SuburbSense" />
           <meta property="og:locale" content="en_AU" />
           <meta name="twitter:card" content="summary_large_image" />
@@ -340,19 +368,19 @@ function HomePage() {
             "@context": "https://schema.org",
             "@type": "WebSite",
             "name": "SuburbSense",
-            "url": "https://suburbsense.com.au",
+            "url": "https://suburbsense.com",
             "description": "Australian suburb intelligence. Data-driven insights to help you find the perfect place to live, invest, or rent.",
             "publisher": {
               "@type": "Organization",
               "name": "SuburbSense",
               "logo": {
                 "@type": "ImageObject",
-                "url": "https://suburbsense.com.au/logo.png"
+                "url": "https://suburbsense.com/logo.png"
               }
             },
             "potentialAction": {
               "@type": "SearchAction",
-              "target": "https://suburbsense.com.au/suburb/{search_term_string}",
+              "target": "https://suburbsense.com/suburb/{search_term_string}",
               "query-input": "required name=search_term_string"
             }
           })}
@@ -363,8 +391,8 @@ function HomePage() {
             "@context": "https://schema.org",
             "@type": "Organization",
             "name": "SuburbSense",
-            "url": "https://suburbsense.com.au",
-            "logo": "https://suburbsense.com.au/logo.png",
+            "url": "https://suburbsense.com",
+            "logo": "https://suburbsense.com/logo.png",
             "description": "Australian suburb intelligence platform providing data-driven insights for property research",
             "sameAs": [
               "https://twitter.com/suburbsense",
@@ -373,7 +401,7 @@ function HomePage() {
             ],
             "contactPoint": {
               "@type": "ContactPoint",
-              "email": "contact@suburbsense.com.au",
+              "email": "contact@suburbsense.com",
               "contactType": "customer service"
             }
           })}
@@ -383,10 +411,10 @@ function HomePage() {
         <div className="hero-content">
           <div className="hero-badge">🏆 Free Australian Suburb Intelligence</div>
           <h1 className="hero-title">
-            Find Your Perfect Australian Suburb to <span style={{ background: 'linear-gradient(135deg, var(--primary-color), var(--info-color))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Live, Invest & Thrive</span>
+            Make property decisions with <span style={{ background: 'linear-gradient(135deg, var(--primary-color), var(--info-color))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>data, not guesswork.</span>
           </h1>
           <p className="hero-subtitle">
-            Uncover data-driven insights with real ABS census data, ACARA school ratings, transit scores & cost-of-living tools — <strong>all free, no login required</strong>
+            We're on your side of the table — find, assess, and compare Australian suburbs backed by research most buyers never see. <strong>100% free.</strong>
           </p>
           
            <div className="hero-metrics">
@@ -449,6 +477,39 @@ function HomePage() {
                 ))}
               </div>
             </div>
+          </div>
+          
+          <div className="home-workflow" style={{
+            marginTop: '3rem',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '1rem',
+            textAlign: 'left'
+          }}>
+            {[
+              { step: '01', title: 'Find the Suburb', desc: 'Browse 11k+ suburbs with deep demographic and school data.' },
+              { step: '02', title: 'Check the Risks', desc: 'Verify NBN connectivity, bushfire zones, and flood risks.' },
+              { step: '03', title: 'Run the Numbers', desc: 'Calculate ROI, stamp duty, and holding costs instantly.' },
+              { step: '04', title: 'Fund It', desc: 'Connect with top mortgage brokers to secure your loan.' }
+            ].map(w => (
+              <div key={w.step} style={{
+                background: 'var(--surface-alt)',
+                padding: '1.5rem',
+                borderRadius: '12px',
+                border: '1px solid var(--border-color)',
+                position: 'relative'
+              }}>
+                <div style={{
+                  position: 'absolute', top: '-12px', left: '20px',
+                  background: 'var(--primary-color)', color: 'white',
+                  width: '24px', height: '24px', borderRadius: '50%',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: '0.75rem', fontWeight: 'bold'
+                }}>{w.step}</div>
+                <h4 style={{ margin: '0.5rem 0', color: 'var(--text-primary)', fontSize: '1.05rem' }}>{w.title}</h4>
+                <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>{w.desc}</p>
+              </div>
+            ))}
           </div>
           
           {selectedSuburb && (
@@ -867,11 +928,11 @@ function SuburbProfile() {
       <Helmet>
         <title>{`${data.name} ${data.state} ${data.postcode} — Schools, Transit & Data | SuburbSense`}</title>
         <meta name="description" content={`${data.name} suburb profile — schools (ICSEA ${Math.round(data.education?.avg_icsea || 0)}), transit score ${scores.transit}/100, stamp duty calculator, ABS demographics ${data.demographics?.population_2021 ? `pop ${data.demographics.population_2021.toLocaleString()}` : ''}. Free.`} />
-        <link rel="canonical" href={`https://suburbsense.com.au/suburb/${data.slug}`} />
+        <link rel="canonical" href={`https://suburbsense.com/suburb/${data.slug}`} />
         <meta property="og:title" content={`${data.name} ${data.state} ${data.postcode} — SuburbSense`} />
         <meta property="og:description" content={suburbSummary} />
         <meta property="og:type" content="place" />
-        <meta property="og:url" content={`https://suburbsense.com.au/suburb/${data.slug}`} />
+        <meta property="og:url" content={`https://suburbsense.com/suburb/${data.slug}`} />
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(suburbPlaceSchema)}</script>
       </Helmet>
@@ -930,14 +991,35 @@ function SuburbProfile() {
             </div>
           </div>
           
-          <div className="hero-score-widget" role="complementary" aria-label="Overall livability score">
-            <div className="hero-score-ring" style={{ '--ring-color': overallLabel.color, '--ring-pct': compositeScore }}>
-              <div className="hero-score-inner">
-                <span className="hero-score-value">{compositeScore}</span>
-                <span className="hero-score-max">/100</span>
+          <div className="hero-score-widget" role="complementary" aria-label="Overall livability score" style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div className="hero-score-ring" style={{ '--ring-color': overallLabel.color, '--ring-pct': compositeScore }}>
+                <div className="hero-score-inner">
+                  <span className="hero-score-value">{compositeScore}</span>
+                  <span className="hero-score-max">/100</span>
+                </div>
+              </div>
+              <div className="hero-score-label" style={{ color: overallLabel.color }}>Overall Score</div>
+            </div>
+            
+            <div className="hero-sparklines" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', paddingLeft: '1.5rem', borderLeft: '1px solid var(--border-color)', minWidth: '150px' }}>
+
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', fontSize: '0.85rem' }}>
+                <span style={{ color: 'var(--text-secondary)' }}>Education</span>
+                <Sparkline data={[50, 60, 65, 70, scores.education || 50]} color="var(--primary-color)" width={40} height={15} />
+                <span style={{ fontWeight: 'bold' }}>{scores.education || '-'}</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', fontSize: '0.85rem' }}>
+                <span style={{ color: 'var(--text-secondary)' }}>Transit</span>
+                <Sparkline data={[40, 45, 55, 60, scores.transit || 50]} color="var(--info-color)" width={40} height={15} />
+                <span style={{ fontWeight: 'bold' }}>{scores.transit || '-'}</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', fontSize: '0.85rem' }}>
+                <span style={{ color: 'var(--text-secondary)' }}>Amenities</span>
+                <Sparkline data={[60, 55, 65, 75, scores.amenities || 50]} color="var(--success-color, #10b981)" width={40} height={15} />
+                <span style={{ fontWeight: 'bold' }}>{scores.amenities || '-'}</span>
               </div>
             </div>
-            <div className="hero-score-label" style={{ color: overallLabel.color }}>Overall Score</div>
           </div>
         </div>
       </div>
@@ -1143,6 +1225,8 @@ function SuburbProfile() {
         )}
 
         <ROISnapshot state={data.state} />
+
+        <MortgageCTA config={AFFILIATE_CONFIG.mortgage} />
 
         <section id="scores" className="score-section">
           <h2 className="section-title">Detailed Scores</h2>
@@ -1533,14 +1617,21 @@ function SuburbProfile() {
           </div>
         </section>
 
+        <TopPicksCard title="Top Energy Plans" categoryConfig={AFFILIATE_CONFIG.energy} />
+        <TopPicksCard title="Top NBN Providers" categoryConfig={AFFILIATE_CONFIG.broadband} />
+        
+        <MovingBanner config={AFFILIATE_CONFIG.moving} suburbName={data.name} />
+
         <section className="faq-section">
           <h2 className="section-title">Frequently Asked Questions</h2>
           <div className="faq-list">
             {faqData.map((faq, idx) => (
-              <div key={idx} className="faq-item">
-                <h3 className="faq-question">{faq.q}</h3>
-                <p className="faq-answer">{faq.a}</p>
-              </div>
+              <details key={idx} className="faq-item">
+                <summary className="faq-question" style={{ cursor: 'pointer', fontWeight: 600, padding: '0.5rem 0', outline: 'none', listStylePosition: 'inside' }}>
+                  {faq.q}
+                </summary>
+                <p className="faq-answer" style={{ padding: '0.5rem 0 0.5rem 1.2rem', color: 'var(--text-secondary)' }}>{faq.a}</p>
+              </details>
             ))}
           </div>
         </section>
@@ -1722,7 +1813,7 @@ function SuburbProfile() {
             </div>
           </div>
           <div className="footer-bottom">
-            <p>© 2026 SuburbSense · suburbsense.com.au</p>
+            <p>© 2026 SuburbSense · suburbsense.com</p>
             <p style={{ fontSize: '0.8rem', marginTop: '0.5rem' }}>
               General information only. Not financial advice. 
               <Link to="/attribution">Data sources</Link> · ABS Census 2021 · ACARA 2025 · CC BY 4.0

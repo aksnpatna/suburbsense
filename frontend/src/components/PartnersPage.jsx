@@ -107,7 +107,7 @@ export function PartnersPage() {
       <Helmet>
         <title>Find Professionals for Your Move | SuburbSense</title>
         <meta name="description" content="Find trusted mortgage brokers, conveyancers, financial advisers and property professionals to help with your next move. Curated by SuburbSense." />
-        <link rel="canonical" href="https://suburbsense.com.au/partners" />
+        <link rel="canonical" href="https://suburbsense.com/partners" />
       </Helmet>
 
       {/* Hero */}
@@ -150,7 +150,7 @@ export function PartnersPage() {
             <p style={{ color: 'var(--text-secondary)', maxWidth: '500px', margin: '0 auto 1.5rem' }}>
               We will email you when we launch our verified professional directory in your state.
             </p>
-            <a href="mailto:hello@suburbsense.com.au?subject=Notify me when professionals are listed" className="btn btn-primary" style={{ borderRadius: '30px', padding: '0.85rem 2rem' }}>
+            <a href="mailto:hello@suburbsense.com?subject=Notify me when professionals are listed" className="btn btn-primary" style={{ borderRadius: '30px', padding: '0.85rem 2rem' }}>
               Notify Me →
             </a>
           </div>
@@ -210,7 +210,7 @@ export function PartnersPage() {
               Send us your company name, the audience you want to reach, and what type of placement interests you. We will respond within 1 business day.
             </p>
             <a
-              href="mailto:partners@suburbsense.com.au"
+              href="mailto:partners@suburbsense.com"
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: '0.75rem',
                 background: '#3b82f6', color: '#fff',
@@ -220,7 +220,7 @@ export function PartnersPage() {
                 boxShadow: '0 4px 14px rgba(59,130,246,0.4)',
               }}
             >
-              📧 partners@suburbsense.com.au
+              📧 partners@suburbsense.com
             </a>
             <p style={{ marginTop: '1rem', fontSize: '0.85rem', color: '#64748b' }}>No forms. No gatekeeping. Just email us directly.</p>
           </div>

@@ -37,10 +37,12 @@ export function ROISnapshot({ state }) {
           salary: 100000,
         }),
       });
+      if (!res.ok) throw new Error('API Error');
       const data = await res.json();
       setResult(data);
     } catch (e) {
       console.error(e);
+      setResult(null);
     }
     setLoading(false);
   };
@@ -100,11 +102,11 @@ export function ROISnapshot({ state }) {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
             <div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Gross Yield</div>
-              <div style={{ fontSize: '1.6rem', fontWeight: 800 }}>{result ? result.gross_yield_pct.toFixed(2) : '--'}%</div>
+              <div style={{ fontSize: '1.6rem', fontWeight: 800 }}>{result?.gross_yield_pct != null ? result.gross_yield_pct.toFixed(2) : '--'}%</div>
             </div>
             <div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Net Yield</div>
-              <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--info-color)' }}>{result ? result.net_yield_pct.toFixed(2) : '--'}%</div>
+              <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--info-color)' }}>{result?.net_yield_pct != null ? result.net_yield_pct.toFixed(2) : '--'}%</div>
             </div>
           </div>
 
@@ -121,6 +123,9 @@ export function ROISnapshot({ state }) {
           <Link to={`/calculators/roi?price=${purchasePrice}&rent=${weeklyRent}&state=${state}`} className="btn btn-outline" style={{ width: '100%', marginTop: '1rem', textAlign: 'center' }}>
             View Full Calculation →
           </Link>
+          <p style={{ fontSize: '0.7rem', color: '#94a3b8', marginTop: '0.75rem', textAlign: 'center' }}>
+            Estimates only. Not financial advice.
+          </p>
         </div>
       </div>
     </section>

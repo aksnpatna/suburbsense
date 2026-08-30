@@ -45,7 +45,7 @@ export function RegionHub() {
       <Helmet>
         <title>Best Suburbs in {regionName} | SuburbSense</title>
         <meta name="description" content={`Explore demographics, school catchments, crime rates, and living costs for suburbs across ${regionName}. Find your perfect place to live.`} />
-        <link rel="canonical" href={`https://suburbsense.com.au/region/${regionSlug}`} />
+        <link rel="canonical" href={`https://suburbsense.com/region/${regionSlug}`} />
       </Helmet>
 
       <div className="hero">

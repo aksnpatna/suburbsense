@@ -314,18 +314,18 @@ export function ROICalculator() {
 
       <section className="calc-faq">
         <h3>Frequently Asked Questions</h3>
-        <div className="faq-item">
-          <h4>What is a good rental yield in Australia?</h4>
-          <p>Gross rental yields of 3–5% are typical for Australian capital cities. Net yield after costs, strata, rates and vacancy is usually 1–3% lower. Regional areas often yield higher but with lower capital growth.</p>
-        </div>
-        <div className="faq-item">
-          <h4>What is cash-on-cash return?</h4>
-          <p>Cash-on-cash return measures annual pre-tax cashflow against the cash you invested (deposit + stamp duty + upfront costs). It shows how hard your actual dollars are working, unlike yield which is measured against the full purchase price.</p>
-        </div>
-        <div className="faq-item">
-          <h4>Is negative gearing worth it?</h4>
-          <p>Negative gearing means rental costs exceed rental income, and the loss can be deducted against other income. Whether it's worth it depends on your tax rate and expected capital growth — a property losing $5,000/yr needs more than $5,000/yr in capital growth just to break even.</p>
-        </div>
+        <details className="faq-item">
+          <summary style={{ cursor: 'pointer', fontWeight: 600, padding: '0.5rem 0', outline: 'none', listStylePosition: 'inside' }}>What is a good rental yield in Australia?</summary>
+          <p style={{ padding: '0.5rem 0 0.5rem 1.2rem', color: 'var(--text-secondary)' }}>Gross rental yields of 3–5% are typical for Australian capital cities. Net yield after costs, strata, rates and vacancy is usually 1–3% lower. Regional areas often yield higher but with lower capital growth.</p>
+        </details>
+        <details className="faq-item">
+          <summary style={{ cursor: 'pointer', fontWeight: 600, padding: '0.5rem 0', outline: 'none', listStylePosition: 'inside' }}>What is cash-on-cash return?</summary>
+          <p style={{ padding: '0.5rem 0 0.5rem 1.2rem', color: 'var(--text-secondary)' }}>Cash-on-cash return measures annual pre-tax cashflow against the cash you invested (deposit + stamp duty + upfront costs). It shows how hard your actual dollars are working, unlike yield which is measured against the full purchase price.</p>
+        </details>
+        <details className="faq-item">
+          <summary style={{ cursor: 'pointer', fontWeight: 600, padding: '0.5rem 0', outline: 'none', listStylePosition: 'inside' }}>Is negative gearing worth it?</summary>
+          <p style={{ padding: '0.5rem 0 0.5rem 1.2rem', color: 'var(--text-secondary)' }}>Negative gearing means rental costs exceed rental income, and the loss can be deducted against other income. Whether it's worth it depends on your tax rate and expected capital growth — a property losing $5,000/yr needs more than $5,000/yr in capital growth just to break even.</p>
+        </details>
       </section>
     </div>
   );

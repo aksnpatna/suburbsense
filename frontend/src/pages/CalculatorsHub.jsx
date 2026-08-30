@@ -74,7 +74,7 @@ export function CalculatorsHub() {
       <Helmet>
         <title>Calculators Hub — Stamp Duty, Affordability, ROI & More | SuburbSense</title>
         <meta name="description" content="Free Australian property calculators: stamp duty, borrowing power, ROI, land tax, council rates, FHBG eligibility. All run in your browser — your data stays on device." />
-        <link rel="canonical" href="https://suburbsense.com.au/calculators" />
+        <link rel="canonical" href="https://suburbsense.com/calculators" />
       </Helmet>
 
       <div className="calculators-hub-page">

@@ -63,7 +63,7 @@ export function RankingsHub() {
           name="description"
           content="Ranked lists of the best Australian suburbs for families, commuters and safety. Data-driven suburb rankings across VIC, NSW, QLD, and SA."
         />
-        <link rel="canonical" href="https://suburbsense.com.au/rankings" />
+        <link rel="canonical" href="https://suburbsense.com/rankings" />
       </Helmet>
 
       {/* Hero */}

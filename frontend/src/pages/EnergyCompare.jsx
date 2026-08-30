@@ -33,7 +33,7 @@ export function EnergyCompare() {
       <Helmet>
         <title>Compare Energy Plans — Coming Soon | SuburbSense</title>
         <meta name="description" content="We are integrating with top Australian energy providers to bring you the best electricity and gas plan comparisons directly inside SuburbSense." />
-        <link rel="canonical" href="https://suburbsense.com.au/energy/compare" />
+        <link rel="canonical" href="https://suburbsense.com/energy/compare" />
       </Helmet>
 
       <div className="calc-header" style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto 2rem' }}>
