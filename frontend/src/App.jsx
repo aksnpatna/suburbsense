@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import ErrorBoundary from './components/ErrorBoundary';
+import LoadingSpinner from './components/LoadingSpinner';
+import React, { useState, useEffect, useRef, useCallback, Suspense } from 'react';
 import { SuburbTOC } from './components/SuburbTOC';
 import { Routes, Route, Link, useLocation, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -17,28 +19,28 @@ import { AINewsSection } from './components/AINewsSection';
 import { GlobalMarketPulse } from './components/GlobalMarketPulse';
 import { TrendingTicker } from './components/TrendingTicker';
 import { PartnersPage } from './components/PartnersPage';
-import { RegionHub } from './pages/RegionHub';
-import { LegalPage } from './pages/LegalPage';
-import { ComparePage } from './pages/ComparePage';
-import { StampDutyCalculator } from './pages/StampDutyCalculator';
-import { AffordabilityCalculator } from './pages/AffordabilityCalculator';
-import { ROICalculator } from './pages/ROICalculator';
-import { EnergyCompare } from './pages/EnergyCompare';
-import { NBNLookup } from './pages/NBNLookup';
-import { FHBAChecker } from './pages/FHBAChecker';
-import { LandTaxCalculator } from './pages/LandTaxCalculator';
-import { CouncilRatesEstimator } from './pages/CouncilRatesEstimator';
-import { CalculatorsHub } from './pages/CalculatorsHub';
-import { CompareSuburbs } from './pages/CompareSuburbs';
-import { StateHub } from './pages/StateHub';
-import { AnalyticsDashboard } from './pages/AnalyticsDashboard';
-import { FeedbackWidget } from './components/FeedbackWidget';
-import { GuidePage } from './pages/GuidePage';
-import { RankingsHub } from './pages/RankingsHub';
-import { ComingSoon } from './pages/ComingSoon';
-import { DataMethodology } from './pages/DataMethodology';
 import { useAnalytics } from './hooks/useAnalytics';
 
+const RegionHub = React.lazy(() => import('./pages/RegionHub').then(m => ({ default: m.RegionHub })));
+const LegalPage = React.lazy(() => import('./pages/LegalPage').then(m => ({ default: m.LegalPage })));
+const ComparePage = React.lazy(() => import('./pages/ComparePage').then(m => ({ default: m.ComparePage })));
+const StampDutyCalculator = React.lazy(() => import('./pages/StampDutyCalculator').then(m => ({ default: m.StampDutyCalculator })));
+const AffordabilityCalculator = React.lazy(() => import('./pages/AffordabilityCalculator').then(m => ({ default: m.AffordabilityCalculator })));
+const ROICalculator = React.lazy(() => import('./pages/ROICalculator').then(m => ({ default: m.ROICalculator })));
+const EnergyCompare = React.lazy(() => import('./pages/EnergyCompare').then(m => ({ default: m.EnergyCompare })));
+const NBNLookup = React.lazy(() => import('./pages/NBNLookup').then(m => ({ default: m.NBNLookup })));
+const FHBAChecker = React.lazy(() => import('./pages/FHBAChecker').then(m => ({ default: m.FHBAChecker })));
+const LandTaxCalculator = React.lazy(() => import('./pages/LandTaxCalculator').then(m => ({ default: m.LandTaxCalculator })));
+const CouncilRatesEstimator = React.lazy(() => import('./pages/CouncilRatesEstimator').then(m => ({ default: m.CouncilRatesEstimator })));
+const CalculatorsHub = React.lazy(() => import('./pages/CalculatorsHub').then(m => ({ default: m.CalculatorsHub })));
+const CompareSuburbs = React.lazy(() => import('./pages/CompareSuburbs').then(m => ({ default: m.CompareSuburbs })));
+const StateHub = React.lazy(() => import('./pages/StateHub').then(m => ({ default: m.StateHub })));
+const AnalyticsDashboard = React.lazy(() => import('./pages/AnalyticsDashboard').then(m => ({ default: m.AnalyticsDashboard })));
+const FeedbackWidget = React.lazy(() => import('./components/FeedbackWidget').then(m => ({ default: m.FeedbackWidget })));
+const GuidePage = React.lazy(() => import('./pages/GuidePage').then(m => ({ default: m.GuidePage })));
+const RankingsHub = React.lazy(() => import('./pages/RankingsHub').then(m => ({ default: m.RankingsHub })));
+const ComingSoon = React.lazy(() => import('./pages/ComingSoon').then(m => ({ default: m.ComingSoon })));
+const DataMethodology = React.lazy(() => import('./pages/DataMethodology').then(m => ({ default: m.DataMethodology })));
 const AmenityMap = React.lazy(() => import('./components/AmenityMap').then(m => ({ default: m.AmenityMap })));
 
 const Sparkline = ({ data, color, width = 60, height = 20 }) => {
@@ -220,7 +222,7 @@ function App() {
         </header>
 
         <main className="main">
-          <Routes>
+          <Suspense fallback={<LoadingSpinner />}><Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/state/:stateId" element={<StateHub />} />
             <Route path="/suburb/:slug" element={<SuburbProfile />} />
@@ -248,10 +250,10 @@ function App() {
             <Route path="/analytics" element={<AnalyticsDashboard />} />
             <Route path="/methodology" element={<DataMethodology />} />
             <Route path="/coming-soon" element={<ComingSoon />} />
-          </Routes>
+          </Routes></Suspense>
         </main>
 
-        <FeedbackWidget />
+        <Suspense fallback={null}><FeedbackWidget /></Suspense>
 
          <footer className="footer" style={{ background: 'var(--surface)', borderTop: '1px solid var(--border-color)', color: 'var(--text-secondary)' }}>
           <div className="container">
