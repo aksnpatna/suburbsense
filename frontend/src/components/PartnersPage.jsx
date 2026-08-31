@@ -9,6 +9,13 @@ const PROFESSIONAL_CATEGORIES = [
     desc: 'Independent brokers who compare dozens of lenders to find the right home loan for your situation.',
     tags: ['First Home Buyers', 'Refinancing', 'Investment Loans'],
     color: '#3b82f6',
+    partners: [
+      {
+        name: 'AJ Finance Services',
+        url: 'https://www.ajfinanceservices.com.au/',
+        tag: 'Featured Broker'
+      }
+    ]
   },
   {
     id: 'conveyancers',
@@ -84,19 +91,40 @@ function ProfessionalCard({ pro }) {
           }}>{t}</span>
         ))}
       </div>
-      <div style={{
-        display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-        padding: '0.6rem 1.2rem',
-        borderRadius: '8px',
-        background: 'var(--surface-alt)',
-        border: `1px solid ${pro.color}40`,
-        color: 'var(--text-secondary)',
-        fontSize: '0.85rem',
-        fontWeight: 600,
-      }}>
-        <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#f59e0b', display: 'inline-block' }} />
-        Coming Soon — Curating providers
-      </div>
+      
+      {pro.partners && pro.partners.length > 0 ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          {pro.partners.map(p => (
+            <a key={p.name} href={p.url} target="_blank" rel="noopener noreferrer" style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '0.8rem 1.2rem', borderRadius: '10px',
+              background: 'var(--surface-color)', border: `1px solid ${pro.color}50`,
+              textDecoration: 'none', color: 'var(--text-primary)', fontWeight: 600,
+              transition: 'all 0.2s ease',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
+            }}
+            onMouseOver={e => { e.currentTarget.style.background = 'var(--surface-alt)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+            onMouseOut={e => { e.currentTarget.style.background = 'var(--surface-color)'; e.currentTarget.style.transform = 'none'; }}>
+              <span>{p.name}</span>
+              {p.tag && <span style={{ fontSize: '0.75rem', background: pro.color, color: 'white', padding: '0.2rem 0.6rem', borderRadius: '12px' }}>{p.tag}</span>}
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div style={{
+          display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+          padding: '0.6rem 1.2rem',
+          borderRadius: '8px',
+          background: 'var(--surface-alt)',
+          border: `1px solid ${pro.color}40`,
+          color: 'var(--text-secondary)',
+          fontSize: '0.85rem',
+          fontWeight: 600,
+        }}>
+          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#f59e0b', display: 'inline-block' }} />
+          Coming Soon — Curating providers
+        </div>
+      )}
     </div>
   );
 }
