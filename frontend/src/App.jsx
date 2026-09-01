@@ -43,6 +43,7 @@ const RankingsHub = React.lazy(() => import('./pages/RankingsHub').then(m => ({ 
 const DataMethodology = React.lazy(() => import('./pages/DataMethodology').then(m => ({ default: m.DataMethodology })));
 const Removalists = React.lazy(() => import('./pages/Removalists').then(m => ({ default: m.Removalists })));
 const AmenityMap = React.lazy(() => import('./components/AmenityMap').then(m => ({ default: m.AmenityMap })));
+const UtilitiesHub = React.lazy(() => import('./pages/UtilitiesHub').then(m => ({ default: m.UtilitiesHub })));
 
 const Sparkline = ({ data, color, width = 60, height = 20 }) => {
   if (!data || data.length === 0) return null;
@@ -251,6 +252,7 @@ function App() {
             <Route path="/analytics" element={<AnalyticsDashboard />} />
             <Route path="/methodology" element={<DataMethodology />} />
             <Route path="/removalists" element={<Removalists />} />
+            <Route path="/utilities/:slug" element={<UtilitiesHub />} />
           </Routes></Suspense>
         </main>
 
@@ -969,6 +971,9 @@ function SuburbProfile() {
                 />
                 <Link to={`/suburb/compare?s1=${data.slug}`} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                   ⚖️ Compare
+                </Link>
+                <Link to={`/utilities/${data.slug}`} className="btn btn-secondary" style={{ padding: '0.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.4rem', background: '#eff6ff', color: '#1e40af', borderColor: '#bfdbfe' }}>
+                  ⚡ Utilities
                 </Link>
                 <SuburbAlertSignup suburb={{ slug: data.slug, name: data.name, state: data.state }} />
               </div>
