@@ -19,6 +19,7 @@ import { AINewsSection } from './components/AINewsSection';
 import { GlobalMarketPulse } from './components/GlobalMarketPulse';
 import { TrendingTicker } from './components/TrendingTicker';
 import { PartnersPage } from './components/PartnersPage';
+import { RiskInfo } from './components/RiskInfo';
 import { useAnalytics } from './hooks/useAnalytics';
 
 const RegionHub = React.lazy(() => import('./pages/RegionHub').then(m => ({ default: m.RegionHub })));
@@ -39,8 +40,8 @@ const AnalyticsDashboard = React.lazy(() => import('./pages/AnalyticsDashboard')
 const FeedbackWidget = React.lazy(() => import('./components/FeedbackWidget').then(m => ({ default: m.FeedbackWidget })));
 const GuidePage = React.lazy(() => import('./pages/GuidePage').then(m => ({ default: m.GuidePage })));
 const RankingsHub = React.lazy(() => import('./pages/RankingsHub').then(m => ({ default: m.RankingsHub })));
-const ComingSoon = React.lazy(() => import('./pages/ComingSoon').then(m => ({ default: m.ComingSoon })));
 const DataMethodology = React.lazy(() => import('./pages/DataMethodology').then(m => ({ default: m.DataMethodology })));
+const Removalists = React.lazy(() => import('./pages/Removalists').then(m => ({ default: m.Removalists })));
 const AmenityMap = React.lazy(() => import('./components/AmenityMap').then(m => ({ default: m.AmenityMap })));
 
 const Sparkline = ({ data, color, width = 60, height = 20 }) => {
@@ -249,7 +250,7 @@ function App() {
             <Route path="/rankings" element={<RankingsHub />} />
             <Route path="/analytics" element={<AnalyticsDashboard />} />
             <Route path="/methodology" element={<DataMethodology />} />
-            <Route path="/coming-soon" element={<ComingSoon />} />
+            <Route path="/removalists" element={<Removalists />} />
           </Routes></Suspense>
         </main>
 
@@ -777,6 +778,7 @@ function SuburbProfile() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [selectedSchoolZone, setSelectedSchoolZone] = useState(null);
+  const [riskZones, setRiskZones] = useState(null);
   const mapRef = React.useRef(null);
 
   React.useEffect(() => {
@@ -795,6 +797,17 @@ function SuburbProfile() {
           state: result.state,
           postcode: result.postcode,
         });
+        
+        // Fetch risk zones data
+        try {
+          const riskResponse = await fetch(`/api/suburbs/${slug}/risk-zones`);
+          if (riskResponse.ok) {
+            const riskData = await riskResponse.json();
+            setRiskZones(riskData);
+          }
+        } catch (riskErr) {
+          console.log('Risk zones data not available:', riskErr);
+        }
       } catch (err) {
         setError(err.message);
       } finally {
@@ -1104,6 +1117,8 @@ function SuburbProfile() {
               transitStops={data.transit_stops}
               schoolZone={selectedSchoolZone}
               religions={data.amenities.per_category?.religion || []}
+              bushfireZones={riskZones?.bushfire?.geojson}
+              floodZones={riskZones?.flood?.geojson}
               onMarkerClick={(marker) => {
                 if (marker.category && marker.category.startsWith('school')) {
                   const catchment = data.school_catchments?.find(c => c.name === marker.name);
@@ -1120,6 +1135,13 @@ function SuburbProfile() {
             />
           </React.Suspense>
         </section>
+
+        {/* Natural Hazard Risks Section */}
+        <RiskInfo 
+          bushfireRisk={riskZones?.bushfire} 
+          floodRisk={riskZones?.flood}
+          state={data.state}
+        />
 
         {(strengths.length > 0 || tradeoffs.length > 0) && (
           <section id="strengths" className="strengths-tradeoffs-section">

@@ -111,19 +111,20 @@ function ProfessionalCard({ pro }) {
           ))}
         </div>
       ) : (
-        <div style={{
-          display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-          padding: '0.6rem 1.2rem',
-          borderRadius: '8px',
-          background: 'var(--surface-alt)',
-          border: `1px solid ${pro.color}40`,
-          color: 'var(--text-secondary)',
-          fontSize: '0.85rem',
-          fontWeight: 600,
-        }}>
-          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#f59e0b', display: 'inline-block' }} />
-          Coming Soon — Curating providers
-        </div>
+          <a href="mailto:partners@suburbsense.com" style={{
+            display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+            padding: '0.6rem 1.2rem',
+            borderRadius: '8px',
+            background: 'var(--surface-alt)',
+            border: `1px solid ${pro.color}40`,
+            color: 'var(--text-secondary)',
+            fontSize: '0.85rem',
+            fontWeight: 600,
+            textDecoration: 'none'
+          }}>
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }} />
+            Join Directory
+          </a>
       )}
     </div>
   );

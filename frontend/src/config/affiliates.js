@@ -15,7 +15,7 @@ export const AFFILIATE_CONFIG = {
         name: 'Aussie Broadband',
         description: 'Fast, reliable NBN with award-winning Aussie support.',
         tag: 'Most Popular',
-        url: '/coming-soon?service=broadband',
+        url: 'https://www.aussiebroadband.com.au/',
         icon: '🌐'
       },
       {
@@ -23,7 +23,7 @@ export const AFFILIATE_CONFIG = {
         name: 'Superloop',
         description: 'High-speed performance for gamers and heavy streamers.',
         tag: 'Best Value',
-        url: '/coming-soon?service=broadband',
+        url: 'https://www.superloop.com/',
         icon: '⚡'
       }
     ]
@@ -38,7 +38,7 @@ export const AFFILIATE_CONFIG = {
         name: 'Origin Energy',
         description: 'Predictable rates and great solar feed-in tariffs.',
         tag: 'Green Pick',
-        url: '/coming-soon?service=energy',
+        url: 'https://www.originenergy.com.au/',
         icon: '💡'
       }
     ]
@@ -59,7 +59,7 @@ export const AFFILIATE_CONFIG = {
     partnerName: 'Muval',
     ctaText: 'Compare Removalists',
     description: 'Moving soon? Compare trusted local and interstate removalists instantly.',
-    url: '/coming-soon?service=removalists',
+    url: 'https://www.muval.com.au/',
   }
 };
 

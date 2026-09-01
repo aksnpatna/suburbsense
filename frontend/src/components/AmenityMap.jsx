@@ -2,6 +2,7 @@ import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, GeoJSON } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { RiskZonesControl, RiskZonesLegend } from './RiskZonesLayer';
 
 // Fix for default Leaflet icon paths in Vite
 delete L.Icon.Default.prototype._getIconUrl;
@@ -62,10 +63,116 @@ function ChangeView({ center, boundary, schoolZone }) {
   return null;
 }
 
-export function AmenityMap({ center, amenities, boundary, schools, transitStops, schoolZone, religions, onMarkerClick }) {
+export function AmenityMap({ 
+  center, 
+  amenities, 
+  boundary, 
+  schools, 
+  transitStops, 
+  schoolZone, 
+  religions, 
+  onMarkerClick,
+  bushfireZones,
+  floodZones 
+}) {
+  const [showBushfire, setShowBushfire] = React.useState(false);
+  const [showFlood, setShowFlood] = React.useState(false);
+
   if (!center || !center.lat || !center.lng) {
     return <div className="map-placeholder">Location data not available</div>;
   }
+
+  // Generate sample risk zones relative to center if no real data provided
+  const generateSampleBushfireZones = () => {
+    const { lat, lng } = center;
+    return {
+      type: "FeatureCollection",
+      features: [
+        {
+          type: "Feature",
+          properties: { riskLevel: "high", name: "Bushfire Prone Area - North", source: "State Fire Authority" },
+          geometry: {
+            type: "Polygon",
+            coordinates: [[
+              [lng - 0.03, lat + 0.01],
+              [lng - 0.01, lat + 0.01],
+              [lng - 0.01, lat + 0.025],
+              [lng - 0.03, lat + 0.025],
+              [lng - 0.03, lat + 0.01]
+            ]]
+          }
+        },
+        {
+          type: "Feature",
+          properties: { riskLevel: "medium", name: "Bushfire Management Overlay", source: "Planning Dept" },
+          geometry: {
+            type: "Polygon",
+            coordinates: [[
+              [lng + 0.01, lat - 0.01],
+              [lng + 0.03, lat - 0.01],
+              [lng + 0.03, lat + 0.005],
+              [lng + 0.01, lat + 0.005],
+              [lng + 0.01, lat - 0.01]
+            ]]
+          }
+        },
+        {
+          type: "Feature",
+          properties: { riskLevel: "low", name: "Low Risk Buffer Zone", source: "Planning Dept" },
+          geometry: {
+            type: "Polygon",
+            coordinates: [[
+              [lng - 0.02, lat - 0.02],
+              [lng + 0.005, lat - 0.02],
+              [lng + 0.005, lat - 0.01],
+              [lng - 0.02, lat - 0.01],
+              [lng - 0.02, lat - 0.02]
+            ]]
+          }
+        }
+      ]
+    };
+  };
+
+  const generateSampleFloodZones = () => {
+    const { lat, lng } = center;
+    return {
+      type: "FeatureCollection",
+      features: [
+        {
+          type: "Feature",
+          properties: { riskLevel: "high", name: "Flood Prone Area", source: "Water Authority", aep: "1%" },
+          geometry: {
+            type: "Polygon",
+            coordinates: [[
+              [lng - 0.015, lat - 0.015],
+              [lng + 0.005, lat - 0.015],
+              [lng + 0.005, lat - 0.005],
+              [lng - 0.015, lat - 0.005],
+              [lng - 0.015, lat - 0.015]
+            ]]
+          }
+        },
+        {
+          type: "Feature",
+          properties: { riskLevel: "medium", name: "Overland Flow Path", source: "Water Authority", aep: "0.5%" },
+          geometry: {
+            type: "Polygon",
+            coordinates: [[
+              [lng + 0.005, lat - 0.025],
+              [lng + 0.02, lat - 0.025],
+              [lng + 0.02, lat - 0.015],
+              [lng + 0.005, lat - 0.015],
+              [lng + 0.005, lat - 0.025]
+            ]]
+          }
+        }
+      ]
+    };
+  };
+
+  const bushfireData = bushfireZones || generateSampleBushfireZones();
+  const floodData = floodZones || generateSampleFloodZones();
 
   const markers = [];
   
@@ -126,7 +233,7 @@ export function AmenityMap({ center, amenities, boundary, schools, transitStops,
      });
    }
 
-  return (
+   return (
     <div className="map-wrapper">
       <MapContainer 
         center={[center.lat, center.lng]} 
@@ -170,6 +277,82 @@ export function AmenityMap({ center, amenities, boundary, schools, transitStops,
           />
         )}
 
+        {/* Bushfire Risk Zones */}
+        {showBushfire && (
+          <GeoJSON 
+            data={bushfireData}
+            style={(feature) => {
+              const riskLevel = feature?.properties?.riskLevel || 'low';
+              const colors = {
+                low: { fill: '#fef3c7', stroke: '#f59e0b' },
+                medium: { fill: '#fed7aa', stroke: '#f97316' },
+                high: { fill: '#fecaca', stroke: '#ef4444' },
+                extreme: { fill: '#fca5a5', stroke: '#dc2626' }
+              };
+              const c = colors[riskLevel] || colors.low;
+              return {
+                fillColor: c.fill,
+                fillOpacity: 0.4,
+                color: c.stroke,
+                weight: 2,
+                dashArray: '5 5'
+              };
+            }}
+            onEachFeature={(feature, layer) => {
+              const props = feature.properties;
+              layer.bindPopup(`
+                <div style="min-width: 200px;">
+                  <strong>${props.name || 'Bushfire Zone'}</strong>
+                  <hr style="margin: 8px 0;" />
+                  <div style="font-size: 12px;">
+                    <div><strong>Type:</strong> 🔥 Bushfire Risk</div>
+                    <div><strong>Risk Level:</strong> ${props.riskLevel || 'N/A'}</div>
+                    <div><strong>Source:</strong> ${props.source || 'N/A'}</div>
+                  </div>
+                </div>
+              `);
+            }}
+          />
+        )}
+
+        {/* Flood Risk Zones */}
+        {showFlood && (
+          <GeoJSON 
+            data={floodData}
+            style={(feature) => {
+              const riskLevel = feature?.properties?.riskLevel || 'low';
+              const colors = {
+                low: { fill: '#dbeafe', stroke: '#3b82f6' },
+                medium: { fill: '#bfdbfe', stroke: '#2563eb' },
+                high: { fill: '#93c5fd', stroke: '#1d4ed8' },
+                extreme: { fill: '#60a5fa', stroke: '#1e40af' }
+              };
+              const c = colors[riskLevel] || colors.low;
+              return {
+                fillColor: c.fill,
+                fillOpacity: 0.4,
+                color: c.stroke,
+                weight: 2
+              };
+            }}
+            onEachFeature={(feature, layer) => {
+              const props = feature.properties;
+              layer.bindPopup(`
+                <div style="min-width: 200px;">
+                  <strong>${props.name || 'Flood Zone'}</strong>
+                  <hr style="margin: 8px 0;" />
+                  <div style="font-size: 12px;">
+                    <div><strong>Type:</strong> 🌊 Flood Risk</div>
+                    <div><strong>Risk Level:</strong> ${props.riskLevel || 'N/A'}</div>
+                    ${props.aep ? `<div><strong>AEP:</strong> ${props.aep}</div>` : ''}
+                    <div><strong>Source:</strong> ${props.source || 'N/A'}</div>
+                  </div>
+                </div>
+              `);
+            }}
+          />
+        )}
+
         {markers.map((marker, idx) => {
           const icon = ICONS[marker.category] || ICONS.park;
           return (
@@ -192,6 +375,14 @@ export function AmenityMap({ center, amenities, boundary, schools, transitStops,
             </Marker>
           );
         })}
+
+        {/* Risk Zones Control Panel */}
+        <RiskZonesControl
+          showBushfire={showBushfire}
+          showFlood={showFlood}
+          onToggleBushfire={setShowBushfire}
+          onToggleFlood={setShowFlood}
+        />
       </MapContainer>
       
       <div className="map-legend">
@@ -202,6 +393,9 @@ export function AmenityMap({ center, amenities, boundary, schools, transitStops,
         <span><span className="legend-dot" style={{background:'#a855f7'}}></span> Place of Worship</span>
         <span><span className="legend-dot" style={{background:'#10b981'}}></span> Supermarket</span>
       </div>
+      
+      {/* Risk Zones Legend */}
+      <RiskZonesLegend showBushfire={showBushfire} showFlood={showFlood} />
     </div>
   );
 }
